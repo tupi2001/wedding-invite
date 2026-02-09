@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(0 0% 15%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(0 0% 15%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(0 0% 15%);
+  --color-primary: hsl(340 18% 58%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(340 15% 94%);
+  --color-secondary-foreground: hsl(0 0% 15%);
+  --color-muted: hsl(340 10% 95%);
+  --color-muted-foreground: hsl(0 0% 40%);
+  --color-accent: hsl(145 20% 48%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  --color-border: hsl(340 12% 88%);
+  --color-input: hsl(340 12% 88%);
+  --color-ring: hsl(340 18% 58%);
+  --radius: 0.75rem;
+  --color-wedding-white: hsl(0 0% 100%);
+  --color-wedding-pink: hsl(340 18% 58%);
+  --color-wedding-blush: hsl(340 15% 91%);
+  --color-wedding-rose: hsl(340 20% 70%);
+  --color-wedding-green: hsl(145 30% 45%);
+  --color-wedding-sage: hsl(145 20% 65%);
+  --color-wedding-charcoal: hsl(0 0% 20%);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+    --primary: 340 18% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 340 15% 94%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 340 10% 95%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 145 20% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 340 12% 88%;
+    --input: 340 12% 88%;
+    --ring: 340 18% 58%;
+    --radius: 0.75rem;
+    --wedding-white: 0 0% 100%;
+    --wedding-pink: 340 18% 58%;
+    --wedding-blush: 340 15% 91%;
+    --wedding-rose: 340 20% 70%;
+    --wedding-green: 145 30% 45%;
+    --wedding-sage: 145 20% 65%;
+    --wedding-charcoal: 0 0% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for cleaner mobile look */
+body::-webkit-scrollbar {
+  display: none;
+}
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

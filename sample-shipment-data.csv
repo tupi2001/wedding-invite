@@ -1,0 +1,21 @@
+SKU,Description,HTS Code,Quantity,Unit Value,Total Value,Origin,Destination
+SKU-001,Cotton T-Shirt Blue,6109.10,100,15.50,1550.00,China,USA
+SKU-002,Men's Denim Jeans,6203.42,50,45.00,2250.00,Bangladesh,USA
+SKU-003,Laptop Computer 15 inch,8471.30,25,850.00,21250.00,Taiwan,USA
+SKU-004,Smartphone Android,8517.12,75,320.00,24000.00,South Korea,USA
+SKU-005,Steel Pipe Industrial,7304.31,200,12.50,2500.00,Mexico,USA
+SKU-006,Cotton T-Shirt Red,7304.31,150,15.50,2325.00,Vietnam,USA
+SKU-007,Wooden Dining Chair,9401.61,40,125.00,5000.00,Indonesia,USA
+SKU-008,LED Television 55 inch,8528.72,30,450.00,13500.00,Malaysia,USA
+SKU-009,Women's Cotton Pants,6204.62,80,38.00,3040.00,India,USA
+SKU-010,Coffee Roasted Beans,8517.12,100,8.50,850.00,Colombia,USA
+SKU-011,Plastic Storage Container,3923.30,300,3.25,975.00,China,USA
+SKU-012,Wooden Coffee Table,9403.60,20,185.00,3700.00,Vietnam,USA
+SKU-013,Cotton Hoodie,6110.20,60,42.00,2520.00,Bangladesh,USA
+SKU-014,Steel Brackets Set,7326.90,500,2.75,1375.00,China,USA
+SKU-015,Kids Action Figures,9503.00,200,12.00,2400.00,China,USA
+SKU-016,Running Shoes,6403.99,100,65.00,6500.00,Vietnam,USA
+SKU-017,Laptop Backpack,6109.10,120,28.00,3360.00,China,USA
+SKU-018,Cane Sugar Raw,1701.14,1000,0.85,850.00,Brazil,USA
+SKU-019,Plastic Bottles,3926.90,800,0.45,360.00,USA,Canada
+SKU-020,Women's Cardigan,6110.20,45,52.00,2340.00,China,USA
