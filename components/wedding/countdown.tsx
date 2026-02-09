@@ -2,7 +2,20 @@
 
 import { useState, useEffect, useRef } from "react"
 
-const WEDDING_DATE = new Date("2026-05-22T17:00:00")
+// Wedding date configuration
+// The wedding is in Cairo, Egypt (Africa/Cairo timezone, UTC+2)
+// We use a fixed UTC timestamp to ensure consistent countdown regardless of user's timezone
+const WEDDING_CONFIG = {
+  // May 22, 2026 at 5:00 PM Cairo time (UTC+2) = 3:00 PM UTC
+  // UTC timestamp: 2026-05-22T15:00:00Z
+  dateUTC: "2026-05-22T15:00:00Z",
+  timezone: "Africa/Cairo",
+  displayDate: "22nd May 2026",
+  displayTime: "5:00 PM",
+}
+
+// Parse the wedding date as UTC to ensure timezone consistency
+const WEDDING_DATE_UTC = new Date(WEDDING_CONFIG.dateUTC)
 
 interface TimeLeft {
   days: number
@@ -39,16 +52,22 @@ export function Countdown() {
     minutes: 0,
     seconds: 0,
   })
+  const [mounted, setMounted] = useState(false)
   const { ref, isVisible } = useScrollReveal()
 
   useEffect(() => {
+    setMounted(true)
+
     const calc = () => {
-      const now = new Date()
-      const diff = WEDDING_DATE.getTime() - now.getTime()
+      // Get current time in UTC for accurate comparison
+      const nowUTC = new Date()
+      const diff = WEDDING_DATE_UTC.getTime() - nowUTC.getTime()
+
       if (diff <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
         return
       }
+
       setTimeLeft({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -56,16 +75,17 @@ export function Countdown() {
         seconds: Math.floor((diff / 1000) % 60),
       })
     }
+
     calc()
     const interval = setInterval(calc, 1000)
     return () => clearInterval(interval)
   }, [])
 
   const items = [
-    { value: timeLeft.days, label: "Days" },
-    { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Minutes" },
-    { value: timeLeft.seconds, label: "Seconds" },
+    { value: mounted ? timeLeft.days : 0, label: "Days" },
+    { value: mounted ? timeLeft.hours : 0, label: "Hours" },
+    { value: mounted ? timeLeft.minutes : 0, label: "Minutes" },
+    { value: mounted ? timeLeft.seconds : 0, label: "Seconds" },
   ]
 
   return (
@@ -102,15 +122,21 @@ export function Countdown() {
             {"Countdown"}
           </h2>
           <p
-            className="font-serif text-sm tracking-[0.12em] mt-3"
-            style={{ color: "#8a8070" }}
+            className="font-serif text-sm tracking-[0.2em] uppercase mt-3"
+            style={{ color: "#5a5a5a" }}
           >
-            {"To the most special day of our lives"}
+            {"Until we say 'I do'"}
           </p>
         </div>
 
         {/* Countdown Grid */}
-        <div className="grid grid-cols-2 gap-4 mt-10">
+        <div
+          className="grid grid-cols-2 gap-4 mt-10"
+          role="timer"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-label="Wedding countdown timer"
+        >
           {items.map((item, idx) => (
             <div
               key={item.label}
@@ -127,6 +153,7 @@ export function Countdown() {
               <span
                 className="font-serif text-4xl font-light block"
                 style={{ color: "#5a6b50" }}
+                aria-label={`${item.value} ${item.label}`}
               >
                 {String(item.value).padStart(2, "0")}
               </span>
@@ -136,6 +163,7 @@ export function Countdown() {
                   color: "#a09888",
                   fontFamily: "var(--font-sans)",
                 }}
+                aria-hidden="true"
               >
                 {item.label}
               </span>

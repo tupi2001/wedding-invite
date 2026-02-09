@@ -90,10 +90,10 @@ export function Program() {
             {"Program of the Day"}
           </h2>
           <p
-            className="font-serif text-sm tracking-[0.1em] mt-3"
-            style={{ color: "#999" }}
+            className="font-serif text-sm tracking-[0.2em] uppercase mt-3"
+            style={{ color: "#666" }}
           >
-            {"What we have prepared for you"}
+            {"Order of Celebrations"}
           </p>
         </div>
 
@@ -146,7 +146,7 @@ export function Program() {
                         {event.title}
                       </h3>
                     </div>
-                    <p className="font-sans text-sm mt-1" style={{ color: "#999" }}>
+                    <p className="font-sans text-sm mt-1" style={{ color: "#666" }}>
                       {event.description}
                     </p>
                   </div>

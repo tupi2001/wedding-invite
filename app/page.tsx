@@ -125,25 +125,6 @@ export default function Page() {
           </div>
 
           <RSVP />
-
-          {/* Footer */}
-          <footer
-            className="py-10 text-center"
-            style={{ background: "#f8f5f0" }}
-          >
-            <p
-              className="font-script text-2xl"
-              style={{ color: "#a09080" }}
-            >
-              {"Nada & Karim"}
-            </p>
-            <p
-              className="text-[10px] tracking-[0.3em] uppercase mt-2"
-              style={{ color: "#c0b5a8", fontFamily: "var(--font-sans)" }}
-            >
-              {"22 May 2026"}
-            </p>
-          </footer>
         </div>
       )}
 

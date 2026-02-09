@@ -62,7 +62,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
 
       {/* Hero Text Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-20">
-        {/* "We're getting married" */}
+        {/* Formal invitation wording */}
         <div
           className={`transition-all duration-1000 ${
             showText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -70,13 +70,13 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           style={{ transitionDelay: "200ms" }}
         >
           <p
-            className="font-serif text-sm tracking-[0.35em] uppercase text-center"
+            className="font-serif text-xs tracking-[0.3em] uppercase text-center"
             style={{
               color: "#fff",
               textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)",
             }}
           >
-            {"We're Getting Married"}
+            {"Request the honour of your presence"}
           </p>
         </div>
 
@@ -138,7 +138,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           <div className="w-20 h-px mx-auto" style={{ background: "rgba(255,255,255,0.5)" }} />
         </div>
 
-        {/* Date */}
+        {/* Date and time */}
         <div
           className={`mt-5 transition-all duration-1000 ${
             showText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -152,7 +152,16 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
               textShadow: "0 2px 10px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
             }}
           >
-            {"22nd May 2026"}
+            {"Friday, 22nd May 2026"}
+          </p>
+          <p
+            className="font-serif text-sm tracking-[0.25em] uppercase text-center mt-2"
+            style={{
+              color: "rgba(255,255,255,0.9)",
+              textShadow: "0 2px 10px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
+            }}
+          >
+            {"5:00 PM"}
           </p>
         </div>
 
