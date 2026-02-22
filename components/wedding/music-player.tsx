@@ -17,6 +17,8 @@ import { useState, useRef, useEffect, useCallback } from "react"
  * Current implementation uses a fallback synthesized melody if no audio file is found.
  */
 
+import { weddingConfig } from "@/config/wedding"
+
 export function MusicPlayer({ shouldPlay }: { shouldPlay: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -32,9 +34,9 @@ export function MusicPlayer({ shouldPlay }: { shouldPlay: boolean }) {
     const audio = new Audio()
 
     // Try to load the audio file
-    audio.src = "/music/wedding-music.mp3"
+    audio.src = weddingConfig.music.src
     audio.loop = true
-    audio.volume = 0.25 // Recommended volume: 0.2-0.3
+    audio.volume = weddingConfig.music.volume
 
     // Check if audio file exists
     audio.addEventListener("canplaythrough", () => {
@@ -49,7 +51,7 @@ export function MusicPlayer({ shouldPlay }: { shouldPlay: boolean }) {
     })
 
     audio.addEventListener("error", () => {
-      console.warn("No audio file found at /public/music/wedding-music.mp3")
+      console.warn(`No audio file found at /public${weddingConfig.music.src}`)
       console.warn("Add your wedding music file to enable audio playback")
       setHasAudioFile(false)
     })

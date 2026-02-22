@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: ["class", ".dark"],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -52,12 +52,17 @@ const config: Config = {
           green: 'hsl(var(--wedding-green))',
           sage: 'hsl(var(--wedding-sage))',
           charcoal: 'hsl(var(--wedding-charcoal))',
+          gold: 'hsl(var(--wedding-gold))',
+          'gold-light': 'hsl(var(--wedding-gold-light))',
+          sand: 'hsl(var(--wedding-sand))',
+          burgundy: 'hsl(var(--wedding-burgundy))',
         },
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-serif)', 'Georgia', 'serif'],
         script: ['var(--font-script)', 'cursive'],
+        arabic: ['var(--font-arabic)', 'Noto Naskh Arabic', 'serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

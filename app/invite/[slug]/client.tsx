@@ -15,8 +15,21 @@ import { MusicPlayer } from "@/components/wedding/music-player"
 import { LanguageToggle } from "@/components/wedding/language-toggle"
 import { FallingPetals } from "@/components/wedding/falling-petals"
 import { FloralDivider } from "@/components/wedding/floral-divider"
+import type { Language } from "@/lib/types"
 
-export default function Page() {
+interface PersonalizedInviteClientProps {
+  invitee: {
+    id: string
+    name_en: string
+    name_ar: string
+    slug: string
+    max_guests: number
+    language_preference: Language
+  } | null
+  langOverride?: Language
+}
+
+export function PersonalizedInviteClient({ invitee, langOverride }: PersonalizedInviteClientProps) {
   const [envelopeOpen, setEnvelopeOpen] = useState(false)
   const [showContent, setShowContent] = useState(false)
   const [whiteFlash, setWhiteFlash] = useState(false)
@@ -31,7 +44,7 @@ export default function Page() {
   }, [])
 
   return (
-    <LanguageProvider>
+    <LanguageProvider defaultLang={langOverride ?? invitee?.language_preference ?? "en"}>
       {!envelopeOpen && <Envelope onOpen={handleEnvelopeOpen} />}
       <main className="relative min-h-screen overflow-x-hidden">
         {whiteFlash && (
@@ -42,28 +55,26 @@ export default function Page() {
         )}
 
         {envelopeOpen && (
-          <div
-            style={{ opacity: showContent ? 1 : 0, transition: "opacity 1s ease-out" }}
-          >
-            {/* Ambient falling petals */}
+          <div style={{ opacity: showContent ? 1 : 0, transition: "opacity 1s ease-out" }}>
             <FallingPetals count={10} />
 
             <HeroSection isVisible={showContent} />
 
-            {/* Gradient: hero -> welcome */}
             <div
               className="relative h-16"
               style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.15), #f4efe7)" }}
               aria-hidden="true"
             />
 
-            <PersonalizedWelcome isVisible={showContent} />
+            <PersonalizedWelcome
+              guestNameEn={invitee?.name_en}
+              guestNameAr={invitee?.name_ar}
+              isVisible={showContent}
+            />
 
             <PhotoGallery />
-
             <VerseSection />
 
-            {/* Gradient into countdown */}
             <div
               className="relative h-12"
               style={{ background: "linear-gradient(to bottom, #f8f5f0, #f4efe7)" }}
@@ -80,21 +91,16 @@ export default function Page() {
 
             <Location />
 
-            <FloralDivider
-              lineColor="#c8a96e40"
-              petalColor="#c8a96e"
-              centerColor="#c8a96e"
-            />
+            <FloralDivider lineColor="#c8a96e40" petalColor="#c8a96e" centerColor="#c8a96e" />
 
             <Program />
 
-            <FloralDivider
-              lineColor="#c8a96e40"
-              petalColor="#c8a96e"
-              centerColor="#c8a96e"
-            />
+            <FloralDivider lineColor="#c8a96e40" petalColor="#c8a96e" centerColor="#c8a96e" />
 
-            <RSVP />
+            <RSVP
+              inviteeId={invitee?.id}
+              maxGuests={invitee?.max_guests ?? 4}
+            />
           </div>
         )}
 

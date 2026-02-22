@@ -1,21 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { useLanguage } from "@/context/language-context"
+import { ArabesqueDivider } from "./arabesque-frame"
+import { weddingConfig } from "@/config/wedding"
 
-// Wedding date configuration
-// The wedding is in Cairo, Egypt (Africa/Cairo timezone, UTC+2)
-// We use a fixed UTC timestamp to ensure consistent countdown regardless of user's timezone
-const WEDDING_CONFIG = {
-  // May 22, 2026 at 5:00 PM Cairo time (UTC+2) = 3:00 PM UTC
-  // UTC timestamp: 2026-05-22T15:00:00Z
-  dateUTC: "2026-05-22T15:00:00Z",
-  timezone: "Africa/Cairo",
-  displayDate: "22nd May 2026",
-  displayTime: "5:00 PM",
-}
-
-// Parse the wedding date as UTC to ensure timezone consistency
-const WEDDING_DATE_UTC = new Date(WEDDING_CONFIG.dateUTC)
+const WEDDING_DATE_UTC = new Date(weddingConfig.date.utc)
 
 interface TimeLeft {
   days: number
@@ -24,50 +15,21 @@ interface TimeLeft {
   seconds: number
 }
 
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    const el = ref.current
-    if (el) observer.observe(el)
-    return () => {
-      if (el) observer.unobserve(el)
-    }
-  }, [])
-
-  return { ref, isVisible }
-}
-
 export function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   const [mounted, setMounted] = useState(false)
   const { ref, isVisible } = useScrollReveal()
+  const { t, lang } = useLanguage()
 
   useEffect(() => {
     setMounted(true)
-
     const calc = () => {
-      // Get current time in UTC for accurate comparison
       const nowUTC = new Date()
       const diff = WEDDING_DATE_UTC.getTime() - nowUTC.getTime()
-
       if (diff <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
         return
       }
-
       setTimeLeft({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -75,17 +37,16 @@ export function Countdown() {
         seconds: Math.floor((diff / 1000) % 60),
       })
     }
-
     calc()
     const interval = setInterval(calc, 1000)
     return () => clearInterval(interval)
   }, [])
 
   const items = [
-    { value: mounted ? timeLeft.days : 0, label: "Days" },
-    { value: mounted ? timeLeft.hours : 0, label: "Hours" },
-    { value: mounted ? timeLeft.minutes : 0, label: "Minutes" },
-    { value: mounted ? timeLeft.seconds : 0, label: "Seconds" },
+    { value: mounted ? timeLeft.days : 0, labelKey: "days" },
+    { value: mounted ? timeLeft.hours : 0, labelKey: "hours" },
+    { value: mounted ? timeLeft.minutes : 0, labelKey: "minutes" },
+    { value: mounted ? timeLeft.seconds : 0, labelKey: "seconds" },
   ]
 
   return (
@@ -96,7 +57,6 @@ export function Countdown() {
         background: "linear-gradient(165deg, #f8f5f0 0%, #f2ede5 40%, #efe9df 70%, #f4efe7 100%)",
       }}
     >
-      {/* Very subtle textile texture */}
       <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
@@ -109,29 +69,27 @@ export function Countdown() {
       />
 
       <div className="relative z-10 max-w-sm mx-auto text-center">
-        {/* Header */}
         <div
-          className={`transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         >
           <h2
-            className="font-script text-4xl"
+            className={`text-4xl ${lang === "ar" ? "font-arabic text-3xl" : "font-script"}`}
             style={{ color: "#5a6b50" }}
           >
-            {"Countdown"}
+            {t("countdown", "title")}
           </h2>
           <p
-            className="font-serif text-sm tracking-[0.2em] uppercase mt-3"
+            className={`font-serif text-sm tracking-[0.2em] uppercase mt-3 ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
             style={{ color: "#5a5a5a" }}
           >
-            {"Until we say 'I do'"}
+            {t("countdown", "subtitle")}
           </p>
         </div>
 
-        {/* Countdown Grid */}
+        <ArabesqueDivider color="#c8a96e" className="mt-4 mb-2" />
+
         <div
-          className="grid grid-cols-2 gap-4 mt-10"
+          className="grid grid-cols-2 gap-4 mt-8"
           role="timer"
           aria-live="polite"
           aria-atomic="true"
@@ -139,13 +97,13 @@ export function Countdown() {
         >
           {items.map((item, idx) => (
             <div
-              key={item.label}
+              key={item.labelKey}
               className={`rounded-xl py-6 px-4 transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
               style={{
                 background: "rgba(255,255,255,0.7)",
-                border: "1px solid rgba(180,170,155,0.2)",
+                border: "1px solid rgba(200,169,110,0.15)",
                 boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
                 transitionDelay: `${300 + idx * 150}ms`,
               }}
@@ -153,67 +111,42 @@ export function Countdown() {
               <span
                 className="font-serif text-4xl font-light block"
                 style={{ color: "#5a6b50" }}
-                aria-label={`${item.value} ${item.label}`}
+                aria-label={`${item.value} ${t("countdown", item.labelKey)}`}
               >
                 {String(item.value).padStart(2, "0")}
               </span>
               <span
-                className="text-[10px] tracking-[0.25em] uppercase mt-2 block"
-                style={{
-                  color: "#a09888",
-                  fontFamily: "var(--font-sans)",
-                }}
+                className={`text-[10px] tracking-[0.25em] uppercase mt-2 block ${lang === "ar" ? "font-arabic tracking-normal text-xs" : ""}`}
+                style={{ color: "#a09888", fontFamily: lang === "ar" ? undefined : "var(--font-sans)" }}
                 aria-hidden="true"
               >
-                {item.label}
+                {t("countdown", item.labelKey)}
               </span>
             </div>
           ))}
         </div>
 
-        {/* Small floral accent */}
         <div
-          className={`mt-10 flex items-center justify-center gap-2 transition-all duration-700 ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}
+          className={`mt-10 flex items-center justify-center gap-2 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
           style={{ transitionDelay: "800ms" }}
         >
-          <div className="w-8 h-px" style={{ background: "#c8bfb2" }} />
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            {[0, 72, 144, 216, 288].map((angle) => (
-              <ellipse
-                key={angle}
-                cx={7 + Math.cos((angle * Math.PI) / 180) * 3}
-                cy={7 + Math.sin((angle * Math.PI) / 180) * 3}
-                rx="2"
-                ry="1.4"
-                fill="#c4b0b6"
-                opacity="0.4"
-                transform={`rotate(${angle} ${7 + Math.cos((angle * Math.PI) / 180) * 3} ${7 + Math.sin((angle * Math.PI) / 180) * 3})`}
-              />
-            ))}
-            <circle cx="7" cy="7" r="1.2" fill="#5a6b50" opacity="0.35" />
+          <div className="w-8 h-px" style={{ background: "#c8a96e50" }} />
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M6 0 L8 4 L12 6 L8 8 L6 12 L4 8 L0 6 L4 4 Z" fill="#c8a96e" opacity="0.35" />
           </svg>
-          <div className="w-8 h-px" style={{ background: "#c8bfb2" }} />
+          <div className="w-8 h-px" style={{ background: "#c8a96e50" }} />
         </div>
 
-        {/* CTA */}
         <div
-          className={`mt-6 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`mt-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "900ms" }}
         >
           <a
             href="#rsvp"
-            className="inline-block font-serif text-sm tracking-[0.18em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-105"
-            style={{
-              borderColor: "#c8bfb2",
-              color: "#5a6b50",
-              background: "transparent",
-            }}
+            className={`inline-block font-serif text-sm tracking-[0.18em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-105 ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
+            style={{ borderColor: "#c8a96e80", color: "#5a6b50", background: "transparent" }}
           >
-            {"Confirm Attendance"}
+            {t("countdown", "confirmAttendance")}
           </a>
         </div>
       </div>

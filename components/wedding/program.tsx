@@ -1,76 +1,23 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { Heart, Wine, Gem, GlassWater, UtensilsCrossed, Music } from "lucide-react"
+import { Heart, Wine, Gem, GlassWater, UtensilsCrossed, Music, type LucideIcon } from "lucide-react"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { useLanguage } from "@/context/language-context"
+import { ArabesqueDivider } from "./arabesque-frame"
+import { weddingConfig } from "@/config/wedding"
 
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.15 }
-    )
-    const el = ref.current
-    if (el) observer.observe(el)
-    return () => {
-      if (el) observer.unobserve(el)
-    }
-  }, [])
-
-  return { ref, isVisible }
+const iconMap: Record<string, LucideIcon> = {
+  Heart, Wine, Gem, GlassWater, UtensilsCrossed, Music,
 }
 
-const schedule = [
-  {
-    time: "17:00",
-    title: "Guest Arrival",
-    description: "Welcome and reception at the ballroom",
-    icon: Heart,
-    color: "#b08d98",
-  },
-  {
-    time: "17:30",
-    title: "Welcome Drink",
-    description: "Cocktails and hors d'oeuvres to start the celebration",
-    icon: Wine,
-    color: "#8aaa7e",
-  },
-  {
-    time: "18:00",
-    title: "Ceremony",
-    description: "The most special moment of the day",
-    icon: Gem,
-    color: "#c4a0ab",
-  },
-  {
-    time: "19:00",
-    title: "Cocktail Hour",
-    description: "Drinks and canapes in the garden terrace",
-    icon: GlassWater,
-    color: "#95b08a",
-  },
-  {
-    time: "21:00",
-    title: "Banquet",
-    description: "Fine dining and celebration",
-    icon: UtensilsCrossed,
-    color: "#b08d98",
-  },
-  {
-    time: "00:00",
-    title: "Party",
-    description: "Dancing until the early hours",
-    icon: Music,
-    color: "#8aaa7e",
-  },
-]
+const schedule = weddingConfig.program.map((item) => ({
+  ...item,
+  icon: iconMap[item.icon] || Heart,
+}))
 
 export function Program() {
-  const { ref, isVisible } = useScrollReveal()
+  const { ref, isVisible } = useScrollReveal(0.15)
+  const { t, lang } = useLanguage()
 
   return (
     <section
@@ -80,29 +27,29 @@ export function Program() {
       style={{ background: "#fff" }}
     >
       <div className="max-w-md mx-auto">
-        {/* Header */}
         <div
-          className={`text-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         >
-          <h2 className="font-script text-4xl" style={{ color: "#2a2a2a" }}>
-            {"Program of the Day"}
+          <h2
+            className={`text-4xl ${lang === "ar" ? "font-arabic text-3xl" : "font-script"}`}
+            style={{ color: "#2a2a2a" }}
+          >
+            {t("program", "title")}
           </h2>
           <p
-            className="font-serif text-sm tracking-[0.2em] uppercase mt-3"
+            className={`font-serif text-sm tracking-[0.2em] uppercase mt-3 ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
             style={{ color: "#666" }}
           >
-            {"Order of Celebrations"}
+            {t("program", "subtitle")}
           </p>
         </div>
 
-        {/* Timeline */}
-        <div className="mt-12 relative">
-          {/* Vertical line */}
+        <ArabesqueDivider color="#c8a96e" className="mt-4 mb-6" />
+
+        <div className="mt-8 relative">
           <div
-            className="absolute left-6 top-0 bottom-0 w-px"
-            style={{ background: "rgba(176,141,152,0.15)" }}
+            className={`absolute ${lang === "ar" ? "right-6" : "left-6"} top-0 bottom-0 w-px`}
+            style={{ background: "linear-gradient(to bottom, transparent, #c8a96e30, #c8a96e30, transparent)" }}
             aria-hidden="true"
           />
 
@@ -112,12 +59,11 @@ export function Program() {
               return (
                 <div
                   key={event.time}
-                  className={`relative flex items-start gap-5 transition-all duration-700 ${
-                    isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
+                  className={`relative flex ${lang === "ar" ? "flex-row-reverse" : "flex-row"} items-start gap-5 transition-all duration-700 ${
+                    isVisible ? "opacity-100 translate-x-0" : `opacity-0 ${lang === "ar" ? "translate-x-6" : "-translate-x-6"}`
                   }`}
                   style={{ transitionDelay: `${300 + idx * 150}ms` }}
                 >
-                  {/* Icon */}
                   <div className="relative z-10 flex flex-col items-center gap-1 shrink-0">
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -130,24 +76,23 @@ export function Program() {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="pt-1 flex-1">
-                    <div className="flex items-center gap-3">
+                    <div className={`flex items-center gap-3 ${lang === "ar" ? "flex-row-reverse" : ""}`}>
                       <span
                         className="font-sans text-xs font-bold tracking-wide px-2.5 py-0.5 rounded-full"
-                        style={{
-                          background: "#b08d98",
-                          color: "#fff",
-                        }}
+                        style={{ background: "#c8a96e", color: "#fff" }}
                       >
                         {event.time}
                       </span>
-                      <h3 className="font-serif text-base font-semibold" style={{ color: "#2a2a2a" }}>
-                        {event.title}
+                      <h3
+                        className={`font-serif text-base font-semibold ${lang === "ar" ? "font-arabic" : ""}`}
+                        style={{ color: "#2a2a2a" }}
+                      >
+                        {t("program", event.titleKey)}
                       </h3>
                     </div>
-                    <p className="font-sans text-sm mt-1" style={{ color: "#666" }}>
-                      {event.description}
+                    <p className={`font-sans text-sm mt-1 ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#666" }}>
+                      {t("program", event.descKey)}
                     </p>
                   </div>
                 </div>
