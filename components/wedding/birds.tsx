@@ -41,21 +41,29 @@ export function BirdsAnimation({ trigger }: { trigger: boolean }) {
 
   useEffect(() => {
     if (!trigger) return
-    let t1: ReturnType<typeof setTimeout>
-    let t2: ReturnType<typeof setTimeout>
-    let t3: ReturnType<typeof setTimeout>
-    // Wait one frame so the initial "idle" transform is painted, then start phase timers.
-    // This ensures the CSS transition from idle -> flyAway actually runs.
+
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    // Start the first cycle
     const rafId = requestAnimationFrame(() => {
-      t1 = setTimeout(() => setPhase("flyAway"), 100)
-      t2 = setTimeout(() => setPhase("flyBack"), 4000)
-      t3 = setTimeout(() => setPhase("resting"), 7500)
+      timers.push(setTimeout(() => setPhase("flyAway"), 100))
+      timers.push(setTimeout(() => setPhase("flyBack"), 4000))
+      timers.push(setTimeout(() => setPhase("resting"), 7500))
+
+      // Loop the animation every 12 seconds
+      const loopInterval = setInterval(() => {
+        setPhase("idle")
+        setTimeout(() => setPhase("flyAway"), 100)
+        setTimeout(() => setPhase("flyBack"), 4000)
+        setTimeout(() => setPhase("resting"), 7500)
+      }, 12000)
+
+      timers.push(loopInterval as any)
     })
+
     return () => {
       cancelAnimationFrame(rafId)
-      clearTimeout(t1!)
-      clearTimeout(t2!)
-      clearTimeout(t3!)
+      timers.forEach(clearTimeout)
     }
   }, [trigger])
 

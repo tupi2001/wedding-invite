@@ -1,8 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { useLanguage } from "@/context/language-context"
+import { ArabesqueDivider } from "./arabesque-frame"
+import { weddingConfig } from "@/config/wedding"
 
-const WEDDING_DATE = new Date("2026-05-22T17:00:00")
+const WEDDING_DATE_UTC = new Date(weddingConfig.date.utc)
 
 interface TimeLeft {
   days: number
@@ -11,40 +15,17 @@ interface TimeLeft {
   seconds: number
 }
 
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    const el = ref.current
-    if (el) observer.observe(el)
-    return () => {
-      if (el) observer.unobserve(el)
-    }
-  }, [])
-
-  return { ref, isVisible }
-}
-
-export function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
+export function Countdown({ hideRsvpButton = false }: { hideRsvpButton?: boolean } = {}) {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [mounted, setMounted] = useState(false)
   const { ref, isVisible } = useScrollReveal()
+  const { t, lang } = useLanguage()
 
   useEffect(() => {
+    setMounted(true)
     const calc = () => {
-      const now = new Date()
-      const diff = WEDDING_DATE.getTime() - now.getTime()
+      const nowUTC = new Date()
+      const diff = WEDDING_DATE_UTC.getTime() - nowUTC.getTime()
       if (diff <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
         return
@@ -61,11 +42,14 @@ export function Countdown() {
     return () => clearInterval(interval)
   }, [])
 
+  const isPast = mounted && timeLeft.days === 0 && timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 && timeLeft.seconds === 0
+
   const items = [
-    { value: timeLeft.days, label: "Days" },
-    { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Minutes" },
-    { value: timeLeft.seconds, label: "Seconds" },
+    { value: mounted ? timeLeft.days : 0, labelKey: "days" },
+    { value: mounted ? timeLeft.hours : 0, labelKey: "hours" },
+    { value: mounted ? timeLeft.minutes : 0, labelKey: "minutes" },
+    { value: mounted ? timeLeft.seconds : 0, labelKey: "seconds" },
   ]
 
   return (
@@ -73,10 +57,9 @@ export function Countdown() {
       ref={ref}
       className="relative w-full py-20 px-6"
       style={{
-        background: "linear-gradient(165deg, #f8f5f0 0%, #f2ede5 40%, #efe9df 70%, #f4efe7 100%)",
+        background: "linear-gradient(180deg, #fdfcf9 0%, #f8f5f0 30%, #f4efe7 70%, #f8f5f0 100%)",
       }}
     >
-      {/* Very subtle textile texture */}
       <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
@@ -89,105 +72,110 @@ export function Countdown() {
       />
 
       <div className="relative z-10 max-w-sm mx-auto text-center">
-        {/* Header */}
         <div
-          className={`transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         >
           <h2
-            className="font-script text-4xl"
+            className={`text-4xl ${lang === "ar" ? "font-arabic text-3xl" : "font-script"}`}
             style={{ color: "#5a6b50" }}
           >
-            {"Countdown"}
+            {t("countdown", "title")}
           </h2>
           <p
-            className="font-serif text-sm tracking-[0.12em] mt-3"
-            style={{ color: "#8a8070" }}
+            className={`font-serif text-sm tracking-[0.2em] uppercase mt-3 ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
+            style={{ color: "#5a5a5a" }}
           >
-            {"To the most special day of our lives"}
+            {t("countdown", "subtitle")}
           </p>
         </div>
 
-        {/* Countdown Grid */}
-        <div className="grid grid-cols-2 gap-4 mt-10">
-          {items.map((item, idx) => (
-            <div
-              key={item.label}
-              className={`rounded-xl py-6 px-4 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              }`}
-              style={{
-                background: "rgba(255,255,255,0.7)",
-                border: "1px solid rgba(180,170,155,0.2)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
-                transitionDelay: `${300 + idx * 150}ms`,
-              }}
-            >
-              <span
-                className="font-serif text-4xl font-light block"
-                style={{ color: "#5a6b50" }}
-              >
-                {String(item.value).padStart(2, "0")}
-              </span>
-              <span
-                className="text-[10px] tracking-[0.25em] uppercase mt-2 block"
-                style={{
-                  color: "#a09888",
-                  fontFamily: "var(--font-sans)",
-                }}
-              >
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ArabesqueDivider color="#c8a96e" className="mt-4 mb-2" />
 
-        {/* Small floral accent */}
-        <div
-          className={`mt-10 flex items-center justify-center gap-2 transition-all duration-700 ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}
-          style={{ transitionDelay: "800ms" }}
-        >
-          <div className="w-8 h-px" style={{ background: "#c8bfb2" }} />
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            {[0, 72, 144, 216, 288].map((angle) => (
-              <ellipse
-                key={angle}
-                cx={7 + Math.cos((angle * Math.PI) / 180) * 3}
-                cy={7 + Math.sin((angle * Math.PI) / 180) * 3}
-                rx="2"
-                ry="1.4"
-                fill="#c4b0b6"
-                opacity="0.4"
-                transform={`rotate(${angle} ${7 + Math.cos((angle * Math.PI) / 180) * 3} ${7 + Math.sin((angle * Math.PI) / 180) * 3})`}
-              />
-            ))}
-            <circle cx="7" cy="7" r="1.2" fill="#5a6b50" opacity="0.35" />
-          </svg>
-          <div className="w-8 h-px" style={{ background: "#c8bfb2" }} />
-        </div>
-
-        {/* CTA */}
-        <div
-          className={`mt-6 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-          style={{ transitionDelay: "900ms" }}
-        >
-          <a
-            href="#rsvp"
-            className="inline-block font-serif text-sm tracking-[0.18em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-105"
-            style={{
-              borderColor: "#c8bfb2",
-              color: "#5a6b50",
-              background: "transparent",
-            }}
+        {isPast ? (
+          <div
+            className={`mt-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+            style={{ transitionDelay: "300ms" }}
           >
-            {"Confirm Attendance"}
-          </a>
-        </div>
+            <h3
+              className={`text-2xl ${lang === "ar" ? "font-arabic" : "font-script"}`}
+              style={{ color: "#5a6b50" }}
+            >
+              {t("countdown", "dayArrived")}
+            </h3>
+            <p
+              className={`font-serif text-sm mt-3 ${lang === "ar" ? "font-arabic text-base" : ""}`}
+              style={{ color: "#888" }}
+            >
+              {t("countdown", "dayArrivedSubtitle")}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div
+              className="grid grid-cols-2 gap-4 mt-8"
+              role="timer"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-label="Wedding countdown timer"
+            >
+              {items.map((item, idx) => (
+                <div
+                  key={item.labelKey}
+                  className={`rounded-xl py-6 px-4 transition-all duration-700 ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  }`}
+                  style={{
+                    background: "rgba(255,255,255,0.85)",
+                    border: "1.5px solid rgba(200,169,110,0.35)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.5)",
+                    transitionDelay: `${300 + idx * 150}ms`,
+                  }}
+                >
+                  <span
+                    className="font-serif text-5xl font-light block"
+                    style={{ color: "#5a6b50" }}
+                    aria-label={`${item.value} ${t("countdown", item.labelKey)}`}
+                  >
+                    {String(item.value).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={`text-[10px] tracking-[0.25em] uppercase mt-2 block ${lang === "ar" ? "font-arabic tracking-normal text-xs" : ""}`}
+                    style={{ color: "#a09888", fontFamily: lang === "ar" ? undefined : "var(--font-sans)" }}
+                    aria-hidden="true"
+                  >
+                    {t("countdown", item.labelKey)}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div
+              className={`mt-10 flex items-center justify-center gap-2 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0"}`}
+              style={{ transitionDelay: "800ms" }}
+            >
+              <div className="w-8 h-px" style={{ background: "#c8a96e50" }} />
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M6 0 L8 4 L12 6 L8 8 L6 12 L4 8 L0 6 L4 4 Z" fill="#c8a96e" opacity="0.35" />
+              </svg>
+              <div className="w-8 h-px" style={{ background: "#c8a96e50" }} />
+            </div>
+
+            {!hideRsvpButton && (
+              <div
+                className={`mt-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                style={{ transitionDelay: "900ms" }}
+              >
+                <a
+                  href="#rsvp"
+                  className={`inline-block font-serif text-sm tracking-[0.18em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-[1.02] hover:bg-[rgba(200,169,110,0.08)] active:scale-[0.98] ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
+                  style={{ borderColor: "#c8a96e80", color: "#5a6b50", background: "transparent", boxShadow: "0 4px 20px rgba(200,169,110,0.15)" }}
+                >
+                  {t("countdown", "confirmAttendance")}
+                </a>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   )

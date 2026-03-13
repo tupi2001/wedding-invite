@@ -1,107 +1,90 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
 import { MapPin } from "lucide-react"
-
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    const el = ref.current
-    if (el) observer.observe(el)
-    return () => {
-      if (el) observer.unobserve(el)
-    }
-  }, [])
-
-  return { ref, isVisible }
-}
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { useLanguage } from "@/context/language-context"
+import { ArabesqueDivider } from "./arabesque-frame"
+import { weddingConfig } from "@/config/wedding"
 
 export function Location() {
   const { ref, isVisible } = useScrollReveal()
+  const { t, lang } = useLanguage()
 
   return (
     <section
       ref={ref}
       id="location"
       className="relative w-full py-20 px-6"
-      style={{ background: "#fff" }}
+      style={{ background: "linear-gradient(180deg, #fff 0%, #fdfcf9 50%, #f8f5f0 100%)" }}
     >
       <div className="max-w-md mx-auto">
-        {/* Header */}
         <div
-          className={`text-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         >
           <div className="flex justify-center mb-4">
             <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(176,141,152,0.1)" }}
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(200,169,110,0.12)", border: "1px solid rgba(200,169,110,0.2)" }}
             >
-              <MapPin size={18} style={{ color: "#b08d98" }} />
+              <MapPin size={22} style={{ color: "#c8a96e" }} />
             </div>
           </div>
-          <h2 className="font-script text-4xl" style={{ color: "#2a2a2a" }}>
-            {"Location"}
+          <h2
+            className={`text-4xl ${lang === "ar" ? "font-arabic text-3xl" : "font-script"}`}
+            style={{ color: "#2a2a2a" }}
+          >
+            {t("location", "title")}
           </h2>
         </div>
 
-        {/* Venue Details */}
+        <ArabesqueDivider color="#c8a96e" className="mt-4 mb-4" />
+
         <div
-          className={`mt-8 text-center transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`mt-6 text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "200ms" }}
         >
-          <h3 className="font-serif text-xl font-semibold" style={{ color: "#2a2a2a" }}>
-            {"The Grand Ballroom"}
+          <h3
+            className={`font-serif text-2xl font-semibold ${lang === "ar" ? "font-arabic" : ""}`}
+            style={{ color: "#2a2a2a" }}
+          >
+            {t("location", "venueName")}
           </h3>
-          <p className="font-sans text-sm mt-2" style={{ color: "#888" }}>
-            {"Four Seasons Hotel"}
+          <p className={`font-sans text-sm mt-2 ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
+            {t("location", "venue")}
           </p>
-          <p className="font-sans text-sm" style={{ color: "#888" }}>
-            {"Cairo, Egypt"}
+          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
+            {t("location", "address")}
+          </p>
+          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
+            {t("location", "city")}
           </p>
         </div>
 
-        {/* Coordinates */}
         <div
-          className={`flex items-center justify-center gap-2 mt-3 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`flex items-center justify-center gap-2 mt-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "300ms" }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" stroke="#c4b0b6" strokeWidth="1.5" />
-            <path d="M12 2v20M2 12h20" stroke="#c4b0b6" strokeWidth="1" />
+            <circle cx="12" cy="12" r="10" stroke="#c8a96e" strokeWidth="1.5" opacity="0.5" />
+            <path d="M12 2v20M2 12h20" stroke="#c8a96e" strokeWidth="1" opacity="0.3" />
           </svg>
-          <span className="font-sans text-xs" style={{ color: "#c4b0b6" }}>
-            {"30.0444\u00B0 N, 31.2357\u00B0 E"}
+          <span className="font-sans text-xs" style={{ color: "#c8a96e80" }}>
+            {`${weddingConfig.venue.coordinates.lat.toFixed(4)}° N, ${weddingConfig.venue.coordinates.lng.toFixed(4)}° E`}
           </span>
         </div>
 
-        {/* Map Embed */}
         <div
-          className={`mt-8 rounded-xl overflow-hidden transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`mt-8 rounded-xl overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{
             transitionDelay: "400ms",
-            boxShadow: "0 4px 20px rgba(176,141,152,0.1)",
+            boxShadow: "0 8px 32px rgba(200,169,110,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+            border: "1px solid rgba(200,169,110,0.12)",
           }}
         >
           <div className="relative w-full" style={{ paddingBottom: "60%" }}>
             <iframe
               title="Wedding venue location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.5!2d31.2357!3d30.0444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sCairo%2C%20Egypt!5e0!3m2!1sen!2seg!4v1"
+              src={weddingConfig.venue.embedUrl}
               className="absolute inset-0 w-full h-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -110,47 +93,22 @@ export function Location() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div
-          className={`mt-6 flex flex-col gap-3 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`mt-6 flex flex-col gap-3 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "500ms" }}
         >
           <a
-            href="https://maps.google.com/?q=Four+Seasons+Hotel+Cairo"
+            href={`https://maps.google.com/?q=${weddingConfig.venue.googleMapsQuery}&travelmode=driving`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-3 px-6 rounded-full font-sans text-sm tracking-wide transition-all duration-300 hover:shadow-md"
-            style={{
-              background: "#b08d98",
-              color: "#fff",
-            }}
-          >
-            <MapPin size={14} />
-            {"Open in Maps"}
-          </a>
-          <a
-            href="https://maps.google.com/?q=Four+Seasons+Hotel+Cairo&travelmode=driving"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-3 px-6 rounded-full font-sans text-sm tracking-wide border transition-all duration-300 hover:shadow-md"
-            style={{
-              borderColor: "#d8c8ce",
-              color: "#b08d98",
-              background: "transparent",
-            }}
+            className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full font-sans text-sm tracking-wide border transition-all duration-300 hover:shadow-md hover:bg-[rgba(200,169,110,0.06)] hover:border-[#c8a96e] ${lang === "ar" ? "font-arabic" : ""}`}
+            style={{ borderColor: "#c8a96e60", color: "#c8a96e", background: "transparent" }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                fill="none"
-              />
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.5" fill="none" />
               <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" fill="none" />
             </svg>
-            {"Get Directions"}
+            {t("location", "getDirections")}
           </a>
         </div>
       </div>
