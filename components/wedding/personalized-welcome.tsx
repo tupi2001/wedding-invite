@@ -24,7 +24,7 @@ export function PersonalizedWelcome({
     <section
       className="relative w-full py-20 px-6 overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, #f4efe7 0%, #faf8f5 30%, #fdf9f4 70%, #f8f5f0 100%)",
+        background: "linear-gradient(180deg, #fdfcf9 0%, #f8f5f0 30%, #f4efe7 70%, #f8f5f0 100%)",
       }}
     >
       {/* Geometric pattern background */}
@@ -48,14 +48,14 @@ export function PersonalizedWelcome({
             transition={{ duration: 1, delay: 0.3 }}
           >
             <p
-              className="font-serif text-sm tracking-[0.3em] uppercase"
+              className="font-serif text-xs tracking-[0.35em] uppercase"
               style={{ color: "#c8a96e" }}
             >
               {t("welcome", "dear")}
             </p>
             <h2
-              className={`mt-3 ${lang === "ar" ? "font-arabic-display text-4xl sm:text-5xl font-medium" : "font-script text-5xl sm:text-6xl"}`}
-              style={{ color: "#2a2a2a" }}
+              className={`mt-3 ${lang === "ar" ? "font-arabic-display text-5xl sm:text-6xl font-medium" : "font-script text-6xl sm:text-7xl"}`}
+              style={{ color: "#2a2a2a", textShadow: "0 2px 8px rgba(42,42,42,0.06)" }}
             >
               {guestName}
             </h2>
@@ -70,7 +70,7 @@ export function PersonalizedWelcome({
         >
           <p
             className={`font-serif text-base leading-relaxed ${lang === "ar" ? "font-arabic text-lg" : ""}`}
-            style={{ color: "#666" }}
+            style={{ color: "#555" }}
           >
             {t("welcome", "invitedTo")}
           </p>

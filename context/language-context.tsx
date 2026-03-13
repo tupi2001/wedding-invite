@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react"
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react"
 import type { Language } from "@/lib/types"
 import { translations, type TranslationSection } from "@/lib/i18n"
 
@@ -37,6 +37,11 @@ export function LanguageProvider({
   )
 
   const dir = lang === "ar" ? "rtl" : "ltr"
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.documentElement.dir = dir
+  }, [lang, dir])
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, toggleLang, t, dir }}>

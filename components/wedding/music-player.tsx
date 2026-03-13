@@ -89,8 +89,9 @@ export function MusicPlayer({ shouldPlay }: { shouldPlay: boolean }) {
   return (
     <button
       onClick={toggleMusic}
-      className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+      className="fixed right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
       style={{
+        bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))",
         background: "linear-gradient(135deg, #b08d98, #9a7a85)",
         color: "#fff",
       }}

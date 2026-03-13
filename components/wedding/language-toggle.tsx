@@ -8,9 +8,10 @@ export function LanguageToggle() {
   return (
     <button
       onClick={toggleLang}
-      className="fixed bottom-6 left-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+      className={`fixed w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${lang === "ar" ? "right-6" : "left-6"}`}
       style={{
         zIndex: 10000,
+        bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))",
         background: "linear-gradient(135deg, rgba(200,169,110,0.9), rgba(180,149,90,0.9))",
         color: "#fff",
         backdropFilter: "blur(8px)",

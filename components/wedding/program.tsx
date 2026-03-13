@@ -24,7 +24,7 @@ export function Program() {
       ref={ref}
       id="program"
       className="relative w-full py-20 px-6"
-      style={{ background: "#fff" }}
+      style={{ background: "linear-gradient(180deg, #fff 0%, #fdfcf9 50%, #f8f5f0 100%)" }}
     >
       <div className="max-w-md mx-auto">
         <div
@@ -46,13 +46,7 @@ export function Program() {
 
         <ArabesqueDivider color="#c8a96e" className="mt-4 mb-6" />
 
-        <div className="mt-8 relative">
-          <div
-            className={`absolute ${lang === "ar" ? "right-6" : "left-6"} top-0 bottom-0 w-px`}
-            style={{ background: "linear-gradient(to bottom, transparent, #c8a96e30, #c8a96e30, transparent)" }}
-            aria-hidden="true"
-          />
-
+        <div className="mt-8">
           <div className="flex flex-col gap-8">
             {schedule.map((event, idx) => {
               const IconComponent = event.icon
@@ -65,14 +59,26 @@ export function Program() {
                   style={{ transitionDelay: `${300 + idx * 150}ms` }}
                 >
                   <div className="relative z-10 flex flex-col items-center gap-1 shrink-0">
+                    {idx > 0 && (
+                      <div
+                        className="absolute w-[2px] bottom-full"
+                        style={{
+                          height: "2rem",
+                          background: "rgba(200,169,110,0.35)",
+                          [lang === "ar" ? "right" : "left"]: "50%",
+                          transform: "translateX(-50%)",
+                        }}
+                        aria-hidden="true"
+                      />
+                    )}
                     <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      className="w-14 h-14 rounded-full flex items-center justify-center"
                       style={{
                         background: `${event.color}10`,
                         border: `1.5px solid ${event.color}25`,
                       }}
                     >
-                      <IconComponent size={18} style={{ color: event.color }} />
+                      <IconComponent size={20} style={{ color: event.color }} />
                     </div>
                   </div>
 

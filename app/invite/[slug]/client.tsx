@@ -118,6 +118,32 @@ function ThankYouView({ invitee }: { invitee: InviteeData }) {
           >
             {weddingConfig.date.time[lang]}
           </p>
+
+          <a
+            href={(() => {
+              const start = new Date(weddingConfig.date.utc)
+              const end = new Date(start.getTime() + 5 * 60 * 60 * 1000)
+              const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")
+              const params = new URLSearchParams({
+                action: "TEMPLATE",
+                text: `${weddingConfig.couple.coupleNames.en} Wedding`,
+                dates: `${fmt(start)}/${fmt(end)}`,
+                location: `${weddingConfig.venue.venue.en}, ${weddingConfig.venue.address.en}, ${weddingConfig.venue.city.en}`,
+                details: `Wedding celebration of ${weddingConfig.couple.coupleNames.en}`,
+              })
+              return `https://calendar.google.com/calendar/render?${params.toString()}`
+            })()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-2 mt-8 font-serif text-sm tracking-[0.15em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-[1.02] hover:bg-[rgba(200,169,110,0.08)] ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
+            style={{ borderColor: "#c8a96e80", color: "#5a6b50", boxShadow: "0 4px 20px rgba(200,169,110,0.15)" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            {lang === "ar" ? "أضف للتقويم" : "Add to Calendar"}
+          </a>
         </div>
       </section>
 
@@ -189,7 +215,10 @@ export function PersonalizedInviteClient({ invitee, langOverride, photos }: Pers
           <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 rounded-full border-2 border-[#c8a96e40] border-t-[#c8a96e] animate-spin" />
             <p className="font-serif text-xs tracking-[0.2em] uppercase" style={{ color: "#c8a96e80" }}>
-              Loading your invitation...
+              Preparing your invitation...
+            </p>
+            <p className="font-serif text-[11px]" style={{ color: "#c8a96e60" }}>
+              We&apos;re so glad you&apos;re here
             </p>
           </div>
         </div>

@@ -57,7 +57,7 @@ export function Countdown({ hideRsvpButton = false }: { hideRsvpButton?: boolean
       ref={ref}
       className="relative w-full py-20 px-6"
       style={{
-        background: "linear-gradient(165deg, #f8f5f0 0%, #f2ede5 40%, #efe9df 70%, #f4efe7 100%)",
+        background: "linear-gradient(180deg, #fdfcf9 0%, #f8f5f0 30%, #f4efe7 70%, #f8f5f0 100%)",
       }}
     >
       <div
@@ -126,13 +126,13 @@ export function Countdown({ hideRsvpButton = false }: { hideRsvpButton?: boolean
                   }`}
                   style={{
                     background: "rgba(255,255,255,0.85)",
-                    border: "1px solid rgba(200,169,110,0.2)",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
+                    border: "1.5px solid rgba(200,169,110,0.35)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.5)",
                     transitionDelay: `${300 + idx * 150}ms`,
                   }}
                 >
                   <span
-                    className="font-serif text-4xl font-light block"
+                    className="font-serif text-5xl font-light block"
                     style={{ color: "#5a6b50" }}
                     aria-label={`${item.value} ${t("countdown", item.labelKey)}`}
                   >
@@ -168,7 +168,7 @@ export function Countdown({ hideRsvpButton = false }: { hideRsvpButton?: boolean
                 <a
                   href="#rsvp"
                   className={`inline-block font-serif text-sm tracking-[0.18em] uppercase py-3 px-8 rounded-full border transition-all duration-300 hover:scale-[1.02] hover:bg-[rgba(200,169,110,0.08)] active:scale-[0.98] ${lang === "ar" ? "font-arabic tracking-normal text-base" : ""}`}
-                  style={{ borderColor: "#c8a96e80", color: "#5a6b50", background: "transparent" }}
+                  style={{ borderColor: "#c8a96e80", color: "#5a6b50", background: "transparent", boxShadow: "0 4px 20px rgba(200,169,110,0.15)" }}
                 >
                   {t("countdown", "confirmAttendance")}
                 </a>

@@ -12,11 +12,11 @@ export function VerseSection() {
       ref={ref}
       className="relative w-full py-24 px-6 overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, #f8f5f0 0%, #f0ebe2 50%, #f8f5f0 100%)",
+        background: "linear-gradient(180deg, #fdfcf9 0%, #f8f5f0 30%, #f4efe7 70%, #f8f5f0 100%)",
       }}
     >
       {/* Islamic geometric pattern background */}
-      <div className="absolute inset-0 opacity-[0.04]" aria-hidden="true">
+      <div className="absolute inset-0 opacity-[0.035]" aria-hidden="true">
         <svg width="100%" height="100%">
           <defs>
             <pattern
@@ -86,7 +86,7 @@ export function VerseSection() {
           style={{ transitionDelay: "200ms" }}
         >
           <p
-            className="font-arabic text-2xl leading-relaxed"
+            className="font-arabic text-3xl leading-relaxed"
             style={{ color: "#c8a96e" }}
             dir="rtl"
           >
@@ -103,8 +103,8 @@ export function VerseSection() {
         >
           <blockquote dir="rtl">
             <p
-              className="font-arabic text-xl sm:text-2xl leading-[2.2]"
-              style={{ color: "#3a3a3a" }}
+              className="font-arabic text-xl sm:text-2xl leading-[2.4]"
+              style={{ color: "#2a2a2a" }}
             >
               وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ
             </p>

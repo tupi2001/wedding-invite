@@ -50,11 +50,11 @@ function PetalSVG({ shape, size, color }: { shape: PetalShape; size: number; col
 export function FallingPetals({ count = 8 }: { count?: number }) {
   const petals = useMemo<Petal[]>(() => {
     const colors = [
-      "rgba(200, 169, 110, 0.30)",
-      "rgba(176, 141, 152, 0.25)",
-      "rgba(196, 160, 171, 0.22)",
-      "rgba(210, 185, 140, 0.28)",
-      "rgba(138, 170, 126, 0.18)",
+      "rgba(200, 169, 110, 0.22)",
+      "rgba(176, 141, 152, 0.18)",
+      "rgba(196, 160, 171, 0.16)",
+      "rgba(210, 185, 140, 0.20)",
+      "rgba(138, 170, 126, 0.14)",
     ]
     const shapes: PetalShape[] = ["rose", "leaf", "blossom"]
 
@@ -62,13 +62,13 @@ export function FallingPetals({ count = 8 }: { count?: number }) {
       id: i,
       left: 5 + Math.random() * 90,
       size: 10 + Math.random() * 12,
-      duration: 16 + Math.random() * 14,
+      duration: 20 + Math.random() * 18,
       delay: Math.random() * 25,
       wobbleAmplitude: 30 + Math.random() * 60,
       sway: 30 + Math.random() * 50,
       swayDirection: Math.random() > 0.5 ? 1 : -1,
       drift: (Math.random() - 0.5) * 40,
-      peakOpacity: 0.35 + Math.random() * 0.35,
+      peakOpacity: 0.22 + Math.random() * 0.25,
       shape: shapes[Math.floor(Math.random() * shapes.length)],
       color: colors[i % colors.length],
     }))

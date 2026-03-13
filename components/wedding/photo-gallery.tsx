@@ -17,6 +17,7 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
   const { ref, isVisible } = useScrollReveal(0.1)
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" })
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [showSwipeHint, setShowSwipeHint] = useState(true)
 
   const scrollTo = useCallback(
     (index: number) => {
@@ -28,6 +29,7 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     setSelectedIndex(emblaApi.selectedScrollSnap())
+    setShowSwipeHint(false)
   }, [emblaApi])
 
   useEffect(() => {
@@ -35,6 +37,12 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
     emblaApi.on("select", onSelect)
     return () => { emblaApi.off("select", onSelect) }
   }, [emblaApi, onSelect])
+
+  useEffect(() => {
+    if (!showSwipeHint) return
+    const timer = setTimeout(() => setShowSwipeHint(false), 4000)
+    return () => clearTimeout(timer)
+  }, [showSwipeHint])
 
   if (photos.length === 0) return null
 
@@ -87,10 +95,10 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
                   className="rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     boxShadow: selectedIndex === idx
-                      ? "0 24px 60px rgba(0,0,0,0.14), 0 8px 24px rgba(200,169,110,0.08)"
+                      ? "0 28px 70px rgba(0,0,0,0.12), 0 12px 32px rgba(200,169,110,0.12)"
                       : "0 8px 24px rgba(0,0,0,0.06)",
-                    transform: selectedIndex === idx ? "scale(1)" : "scale(0.94)",
-                    opacity: selectedIndex === idx ? 1 : 0.6,
+                    transform: selectedIndex === idx ? "scale(1)" : "scale(0.92)",
+                    opacity: selectedIndex === idx ? 1 : 0.5,
                   }}
                 >
                   <Image
@@ -113,9 +121,9 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
               onClick={() => scrollTo(idx)}
               className="transition-all duration-300"
               style={{
-                width: selectedIndex === idx ? 28 : 8,
-                height: 8,
-                borderRadius: 4,
+                width: selectedIndex === idx ? 32 : 8,
+                height: 10,
+                borderRadius: 5,
                 background: selectedIndex === idx
                   ? "linear-gradient(90deg, #c8a96e, #b89a5e)"
                   : "rgba(200,169,110,0.3)",
@@ -126,6 +134,15 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
             />
           ))}
         </div>
+
+        {showSwipeHint && photos.length > 1 && (
+          <p
+            className={`text-center mt-4 text-xs transition-opacity duration-500 ${lang === "ar" ? "font-arabic" : "font-sans"}`}
+            style={{ color: "#c8a96e80" }}
+          >
+            {lang === "ar" ? "اسحب لرؤية المزيد" : "Swipe to see more"}
+          </p>
+        )}
       </div>
     </section>
   )

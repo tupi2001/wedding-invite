@@ -63,7 +63,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
       <ArabesqueFrame
         className="absolute inset-4 sm:inset-8 z-10 w-[calc(100%-2rem)] h-[calc(100%-2rem)] sm:w-[calc(100%-4rem)] sm:h-[calc(100%-4rem)]"
         color="rgba(200,169,110,0.6)"
-        opacity={0.3}
+        opacity={0.4}
         animate={showText}
       />
 
@@ -97,10 +97,10 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           style={{ transitionDelay: "400ms" }}
         >
           <div
-            className="w-24 sm:w-32 h-px mx-auto"
+            className="w-32 sm:w-48 h-[2px] mx-auto"
             style={{
               background: "linear-gradient(90deg, transparent, rgba(200,169,110,0.8), transparent)",
-              boxShadow: "0 0 8px rgba(200,169,110,0.3)",
+              boxShadow: "0 0 12px rgba(200,169,110,0.4), 0 0 24px rgba(200,169,110,0.15)",
             }}
           />
         </div>
@@ -112,7 +112,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
         >
           <h1 className={`text-center leading-tight text-balance ${lang === "ar" ? "font-arabic" : "font-script"}`}>
             <span
-              className="block text-5xl sm:text-7xl md:text-8xl"
+              className="block text-5xl sm:text-7xl md:text-8xl lg:text-9xl"
               style={{
                 color: "#fff",
                 textShadow: "0 3px 16px rgba(0,0,0,0.4), 0 1px 6px rgba(0,0,0,0.3)",
@@ -130,7 +130,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
               {t("hero", "and")}
             </span>
             <span
-              className="block text-5xl sm:text-7xl md:text-8xl"
+              className="block text-5xl sm:text-7xl md:text-8xl lg:text-9xl"
               style={{
                 color: "#fff",
                 textShadow: "0 3px 16px rgba(0,0,0,0.4), 0 1px 6px rgba(0,0,0,0.3)",
@@ -147,10 +147,10 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           style={{ transitionDelay: "900ms" }}
         >
           <div
-            className="w-24 sm:w-32 h-px mx-auto"
+            className="w-32 sm:w-48 h-[2px] mx-auto"
             style={{
               background: "linear-gradient(90deg, transparent, rgba(200,169,110,0.8), transparent)",
-              boxShadow: "0 0 8px rgba(200,169,110,0.3)",
+              boxShadow: "0 0 12px rgba(200,169,110,0.4), 0 0 24px rgba(200,169,110,0.15)",
             }}
           />
         </div>

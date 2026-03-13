@@ -15,7 +15,7 @@ export function Location() {
       ref={ref}
       id="location"
       className="relative w-full py-20 px-6"
-      style={{ background: "linear-gradient(180deg, #fff 0%, #fdfcf9 100%)" }}
+      style={{ background: "linear-gradient(180deg, #fff 0%, #fdfcf9 50%, #f8f5f0 100%)" }}
     >
       <div className="max-w-md mx-auto">
         <div
@@ -23,10 +23,10 @@ export function Location() {
         >
           <div className="flex justify-center mb-4">
             <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(200,169,110,0.1)" }}
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(200,169,110,0.12)", border: "1px solid rgba(200,169,110,0.2)" }}
             >
-              <MapPin size={18} style={{ color: "#c8a96e" }} />
+              <MapPin size={22} style={{ color: "#c8a96e" }} />
             </div>
           </div>
           <h2
@@ -44,18 +44,18 @@ export function Location() {
           style={{ transitionDelay: "200ms" }}
         >
           <h3
-            className={`font-serif text-xl font-semibold ${lang === "ar" ? "font-arabic" : ""}`}
+            className={`font-serif text-2xl font-semibold ${lang === "ar" ? "font-arabic" : ""}`}
             style={{ color: "#2a2a2a" }}
           >
             {t("location", "venueName")}
           </h3>
-          <p className={`font-sans text-sm mt-2 ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#666" }}>
+          <p className={`font-sans text-sm mt-2 ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
             {t("location", "venue")}
           </p>
-          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#666" }}>
+          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
             {t("location", "address")}
           </p>
-          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#666" }}>
+          <p className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#555" }}>
             {t("location", "city")}
           </p>
         </div>

@@ -143,7 +143,7 @@ export function RSVP({ inviteeId, maxGuests = 4, onGroupFull }: RSVPProps) {
       id="rsvp"
       className="relative w-full py-20 px-6 scroll-mt-24"
       style={{
-        background: "linear-gradient(180deg, #fff 0%, #fef9f4 50%, #fdf5ee 100%)",
+        background: "linear-gradient(180deg, #fff 0%, #fdfcf9 50%, #f8f5f0 100%)",
       }}
     >
       <div className="max-w-md mx-auto">
