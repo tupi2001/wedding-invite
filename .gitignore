@@ -10,6 +10,7 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+.pnpm-store/
 
 # RSVP data (contains personal information)
 data/
