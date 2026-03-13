@@ -36,32 +36,32 @@ const date = {
   },
   short: {
     en: "22.05.2026",
-    ar: "٢٢.٠٥.٢٠٢٦",
+    ar: "٢٢ مايو ٢٠٢٦",
   },
 }
 
 const venue = {
   name: {
-    en: "The Royal Ballroom",
-    ar: "القاعة الملكية",
+    en: "Al Masa Hotel",
+    ar: "فندق الماسة",
   },
   venue: {
-    en: "Four Seasons Hotel Cairo at Nile Plaza",
-    ar: "فندق فور سيزونز القاهرة نايل بلازا",
+    en: "Andalusite Hall, Al Masa Hotel",
+    ar: "قاعة اندلسيت، فندق الماسة",
   },
   address: {
-    en: "1089 Corniche El Nil, Garden City",
-    ar: "١٠٨٩ كورنيش النيل، جاردن سيتي",
+    en: "Nasr City",
+    ar: "مدينة نصر",
   },
   city: {
     en: "Cairo, Egypt",
     ar: "القاهرة، مصر",
   },
-  coordinates: { lat: 30.0392, lng: 31.229 },
-  googleMapsQuery: "Four+Seasons+Hotel+Cairo+at+Nile+Plaza",
+  coordinates: { lat: 30.0612396, lng: 31.3170778 },
+  googleMapsQuery: "Al+Masa+Hotel+Nasr+City",
   // Get this from Google Maps > Share > Embed a map
   embedUrl:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.8!2d31.2290!3d30.0392!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c5a7e8e8e7%3A0x8e8e8e8e8e8e8e8e!2sFour%20Seasons%20Hotel%20Cairo%20at%20Nile%20Plaza!5e0!3m2!1sen!2seg!4v1",
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.1498245946905!2d31.317077799999993!3d30.0612396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583e51103c0615%3A0xc2eb3aec54a78cbc!2sAl%20Masa%20Hotel%20Nasr%20City!5e0!3m2!1sen!2sus!4v1772921606481!5m2!1sen!2sus",
 }
 
 const rsvp = {
@@ -97,7 +97,7 @@ export const weddingConfig = {
   // --------------------------------------------------------------------------
   music: {
     src: "/music/wedding-music.mp3",
-    volume: 0.25,
+    volume: 0.15,
   },
 
   // --------------------------------------------------------------------------
@@ -107,26 +107,12 @@ export const weddingConfig = {
   // The titleKey/descKey map to translations below.
   // --------------------------------------------------------------------------
   program: [
-    { time: "17:00", titleKey: "guestArrival", descKey: "guestArrivalDesc", icon: "Heart" as const, color: "#c8a96e" },
-    { time: "17:30", titleKey: "welcomeDrink", descKey: "welcomeDrinkDesc", icon: "Wine" as const, color: "#8aaa7e" },
-    { time: "18:00", titleKey: "ceremony", descKey: "ceremonyDesc", icon: "Gem" as const, color: "#b08d98" },
-    { time: "19:00", titleKey: "cocktailHour", descKey: "cocktailHourDesc", icon: "GlassWater" as const, color: "#95b08a" },
-    { time: "21:00", titleKey: "banquet", descKey: "banquetDesc", icon: "UtensilsCrossed" as const, color: "#c8a96e" },
-    { time: "00:00", titleKey: "party", descKey: "partyDesc", icon: "Music" as const, color: "#b08d98" },
-  ],
-
-  // --------------------------------------------------------------------------
-  // PHOTO GALLERY
-  // Add your photos to /public/photos/ and reference them here.
-  // Leave src empty ("") to show a placeholder.
-  // --------------------------------------------------------------------------
-  gallery: [
-    { src: "", alt: "Photo 1" },
-    { src: "", alt: "Photo 2" },
-    { src: "", alt: "Photo 3" },
-    { src: "", alt: "Photo 4" },
-    { src: "", alt: "Photo 5" },
-    { src: "", alt: "Photo 6" },
+    { time: "", titleKey: "katbKitab", descKey: "katbKitabDesc", icon: "Gem" as const, color: "#c8a96e" },
+    { time: "", titleKey: "weddingEntrance", descKey: "weddingEntranceDesc", icon: "Heart" as const, color: "#b08d98" },
+    { time: "", titleKey: "firstDance", descKey: "firstDanceDesc", icon: "Music" as const, color: "#8aaa7e" },
+    { time: "", titleKey: "party", descKey: "partyDesc", icon: "Wine" as const, color: "#b08d98" },
+    { time: "", titleKey: "food", descKey: "foodDesc", icon: "UtensilsCrossed" as const, color: "#c8a96e" },
+    { time: "", titleKey: "pictures", descKey: "picturesDesc", icon: "Heart" as const, color: "#95b08a" },
   ],
 
   // --------------------------------------------------------------------------
@@ -176,6 +162,8 @@ export const weddingConfig = {
         minutes: "Minutes",
         seconds: "Seconds",
         confirmAttendance: "Confirm Attendance",
+        dayArrived: "The Day Has Arrived!",
+        dayArrivedSubtitle: "We hope to see you there",
       },
       location: {
         title: "Location",
@@ -188,18 +176,18 @@ export const weddingConfig = {
       program: {
         title: "Program of the Day",
         subtitle: "Order of Celebrations",
-        guestArrival: "Guest Arrival",
-        guestArrivalDesc: "Welcome and reception at the ballroom",
-        welcomeDrink: "Welcome Drink",
-        welcomeDrinkDesc: "Cocktails and hors d'oeuvres to start the celebration",
-        ceremony: "Ceremony",
-        ceremonyDesc: "The most special moment of the day",
-        cocktailHour: "Cocktail Hour",
-        cocktailHourDesc: "Drinks and canapés in the garden terrace",
-        banquet: "Banquet",
-        banquetDesc: "Fine dining and celebration",
+        katbKitab: "Katb Kitab",
+        katbKitabDesc: "The marriage contract ceremony",
+        weddingEntrance: "Wedding Entrance",
+        weddingEntranceDesc: "The grand entrance of the bride and groom",
+        firstDance: "First Dance",
+        firstDanceDesc: "The couple's first dance together",
         party: "Party",
-        partyDesc: "Dancing until the early hours",
+        partyDesc: "Dancing and celebration",
+        food: "Food",
+        foodDesc: "A grand feast to celebrate",
+        pictures: "Pictures",
+        picturesDesc: "Capturing the memories of the night",
       },
       rsvp: {
         title: "RSVP",
@@ -229,6 +217,8 @@ export const weddingConfig = {
         confirmedGuests: "Confirmed Guests",
         groupFull: "All spots have been filled for this invitation",
         noResponses: "Be the first to RSVP!",
+        thankYouConfirmed: "Thank you for confirming your attendance!",
+        seeYouThere: "We look forward to celebrating with you",
       },
       footer: {
         coupleNames: couple.coupleNames.en,
@@ -276,6 +266,8 @@ export const weddingConfig = {
         minutes: "دقائق",
         seconds: "ثواني",
         confirmAttendance: "تأكيد الحضور",
+        dayArrived: "!لقد حان اليوم",
+        dayArrivedSubtitle: "نأمل أن نراكم هناك",
       },
       location: {
         title: "الموقع",
@@ -288,18 +280,18 @@ export const weddingConfig = {
       program: {
         title: "برنامج اليوم",
         subtitle: "ترتيب الاحتفالات",
-        guestArrival: "وصول الضيوف",
-        guestArrivalDesc: "الاستقبال في القاعة",
-        welcomeDrink: "مشروب الترحيب",
-        welcomeDrinkDesc: "كوكتيلات ومقبلات لبدء الاحتفال",
-        ceremony: "حفل الزفاف",
-        ceremonyDesc: "أجمل لحظة في اليوم",
-        cocktailHour: "ساعة الكوكتيل",
-        cocktailHourDesc: "مشروبات ومقبلات في شرفة الحديقة",
-        banquet: "المأدبة",
-        banquetDesc: "عشاء فاخر واحتفال",
+        katbKitab: "كتب الكتاب",
+        katbKitabDesc: "مراسم عقد القران",
+        weddingEntrance: "دخلة العروسين",
+        weddingEntranceDesc: "الدخلة الكبرى للعروسين",
+        firstDance: "الرقصة الأولى",
+        firstDanceDesc: "الرقصة الأولى للعروسين",
         party: "الحفلة",
-        partyDesc: "الرقص حتى ساعات الصباح الأولى",
+        partyDesc: "الرقص والاحتفال",
+        food: "العشاء",
+        foodDesc: "بوفيه عشاء مفتوح",
+        pictures: "الصور",
+        picturesDesc: "تخليد ذكريات الليلة",
       },
       rsvp: {
         title: "تأكيد الحضور",
@@ -329,6 +321,8 @@ export const weddingConfig = {
         confirmedGuests: "الضيوف المؤكدون",
         groupFull: "تم ملء جميع الأماكن لهذه الدعوة",
         noResponses: "كن أول من يؤكد الحضور!",
+        thankYouConfirmed: "شكراً لتأكيد حضوركم!",
+        seeYouThere: "نتطلع للاحتفال معكم",
       },
       footer: {
         coupleNames: couple.coupleNames.ar,

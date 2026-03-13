@@ -96,7 +96,13 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           className={`mt-5 transition-all duration-1000 ${showText ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"}`}
           style={{ transitionDelay: "400ms" }}
         >
-          <div className="w-20 h-px mx-auto" style={{ background: "rgba(200,169,110,0.6)" }} />
+          <div
+            className="w-24 sm:w-32 h-px mx-auto"
+            style={{
+              background: "linear-gradient(90deg, transparent, rgba(200,169,110,0.8), transparent)",
+              boxShadow: "0 0 8px rgba(200,169,110,0.3)",
+            }}
+          />
         </div>
 
         {/* Names */}
@@ -106,7 +112,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
         >
           <h1 className={`text-center leading-tight text-balance ${lang === "ar" ? "font-arabic" : "font-script"}`}>
             <span
-              className="block text-7xl sm:text-8xl"
+              className="block text-5xl sm:text-7xl md:text-8xl"
               style={{
                 color: "#fff",
                 textShadow: "0 3px 16px rgba(0,0,0,0.4), 0 1px 6px rgba(0,0,0,0.3)",
@@ -115,7 +121,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
               {t("hero", "bride")}
             </span>
             <span
-              className="block text-4xl sm:text-5xl my-2 font-serif"
+              className="block text-4xl sm:text-5xl my-3 font-serif"
               style={{
                 color: "rgba(200,169,110,0.95)",
                 textShadow: "0 2px 10px rgba(0,0,0,0.3)",
@@ -124,7 +130,7 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
               {t("hero", "and")}
             </span>
             <span
-              className="block text-7xl sm:text-8xl"
+              className="block text-5xl sm:text-7xl md:text-8xl"
               style={{
                 color: "#fff",
                 textShadow: "0 3px 16px rgba(0,0,0,0.4), 0 1px 6px rgba(0,0,0,0.3)",
@@ -140,7 +146,13 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
           className={`mt-5 transition-all duration-1000 ${showText ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"}`}
           style={{ transitionDelay: "900ms" }}
         >
-          <div className="w-20 h-px mx-auto" style={{ background: "rgba(200,169,110,0.6)" }} />
+          <div
+            className="w-24 sm:w-32 h-px mx-auto"
+            style={{
+              background: "linear-gradient(90deg, transparent, rgba(200,169,110,0.8), transparent)",
+              boxShadow: "0 0 8px rgba(200,169,110,0.3)",
+            }}
+          />
         </div>
 
         {/* Date and time */}
@@ -198,12 +210,12 @@ export function HeroSection({ isVisible }: { isVisible: boolean }) {
               {t("hero", "scrollDown")}
             </p>
             <div
-              className="w-5 h-8 rounded-full border-2 flex items-start justify-center pt-1.5"
-              style={{ borderColor: "rgba(200,169,110,0.4)" }}
+              className="w-5 h-8 rounded-full border-2 flex items-start justify-center pt-1.5 animate-pulse"
+              style={{ borderColor: "rgba(200,169,110,0.4)", animationDuration: "3s" }}
             >
               <div
                 className="w-1 h-2 rounded-full animate-bounce"
-                style={{ background: "rgba(200,169,110,0.6)" }}
+                style={{ background: "rgba(200,169,110,0.7)", animationDuration: "2s" }}
               />
             </div>
           </div>

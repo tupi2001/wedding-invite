@@ -1,16 +1,18 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
 import { useLanguage } from "@/context/language-context"
 import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { ArabesqueDivider } from "./arabesque-frame"
-import { weddingConfig } from "@/config/wedding"
 
-const photos = weddingConfig.gallery
+interface Photo {
+  src: string
+  alt: string
+}
 
-export function PhotoGallery() {
+export function PhotoGallery({ photos }: { photos: Photo[] }) {
   const { t, lang } = useLanguage()
   const { ref, isVisible } = useScrollReveal(0.1)
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" })
@@ -28,9 +30,13 @@ export function PhotoGallery() {
     setSelectedIndex(emblaApi.selectedScrollSnap())
   }, [emblaApi])
 
-  useState(() => {
-    if (emblaApi) emblaApi.on("select", onSelect)
-  })
+  useEffect(() => {
+    if (!emblaApi) return
+    emblaApi.on("select", onSelect)
+    return () => { emblaApi.off("select", onSelect) }
+  }, [emblaApi, onSelect])
+
+  if (photos.length === 0) return null
 
   return (
     <section
@@ -41,7 +47,6 @@ export function PhotoGallery() {
       }}
     >
       <div className="relative z-10 max-w-2xl mx-auto px-6">
-        {/* Header */}
         <div
           className={`text-center transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
@@ -64,7 +69,6 @@ export function PhotoGallery() {
         <ArabesqueDivider color="#c8a96e" className="mt-6 mb-8" />
       </div>
 
-      {/* Carousel */}
       <div
         className={`transition-all duration-700 ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -75,7 +79,7 @@ export function PhotoGallery() {
           <div className="flex">
             {photos.map((photo, idx) => (
               <div
-                key={idx}
+                key={photo.src}
                 className="flex-shrink-0 px-3"
                 style={{ flexBasis: "75%", maxWidth: "380px" }}
               >
@@ -83,56 +87,39 @@ export function PhotoGallery() {
                   className="rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     boxShadow: selectedIndex === idx
-                      ? "0 20px 50px rgba(0,0,0,0.12)"
+                      ? "0 24px 60px rgba(0,0,0,0.14), 0 8px 24px rgba(200,169,110,0.08)"
                       : "0 8px 24px rgba(0,0,0,0.06)",
-                    transform: selectedIndex === idx ? "scale(1)" : "scale(0.92)",
+                    transform: selectedIndex === idx ? "scale(1)" : "scale(0.94)",
                     opacity: selectedIndex === idx ? 1 : 0.6,
                   }}
                 >
-                  {photo.src ? (
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      width={380}
-                      height={480}
-                      className="w-full aspect-[3/4] object-cover"
-                    />
-                  ) : (
-                    <div
-                      className="w-full aspect-[3/4] flex flex-col items-center justify-center"
-                      style={{
-                        background: "linear-gradient(135deg, #f0ece6, #e8e2d8, #f0ece6)",
-                        border: "1px dashed #c8a96e30",
-                      }}
-                    >
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <rect x="3" y="3" width="18" height="18" rx="3" stroke="#c8a96e60" strokeWidth="1.5" />
-                        <circle cx="8.5" cy="8.5" r="2" stroke="#c8a96e60" strokeWidth="1.2" />
-                        <path d="M3 16l5-5 4 4 3-3 6 6" stroke="#c8a96e60" strokeWidth="1.2" strokeLinejoin="round" />
-                      </svg>
-                      <p className="font-sans text-xs mt-3" style={{ color: "#c8a96e80" }}>
-                        {t("gallery", "placeholder")}
-                      </p>
-                    </div>
-                  )}
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={380}
+                    height={480}
+                    className="w-full aspect-[3/4] object-cover"
+                  />
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Dots */}
         <div className="flex justify-center gap-2 mt-6">
-          {photos.map((_, idx) => (
+          {photos.map((photo, idx) => (
             <button
-              key={idx}
+              key={photo.src}
               onClick={() => scrollTo(idx)}
               className="transition-all duration-300"
               style={{
-                width: selectedIndex === idx ? 24 : 8,
+                width: selectedIndex === idx ? 28 : 8,
                 height: 8,
                 borderRadius: 4,
-                background: selectedIndex === idx ? "#c8a96e" : "#c8a96e40",
+                background: selectedIndex === idx
+                  ? "linear-gradient(90deg, #c8a96e, #b89a5e)"
+                  : "rgba(200,169,110,0.3)",
+                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
               aria-label={`Go to photo ${idx + 1}`}
               type="button"

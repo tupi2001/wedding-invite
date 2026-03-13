@@ -58,7 +58,7 @@ export function Program() {
               const IconComponent = event.icon
               return (
                 <div
-                  key={event.time}
+                  key={event.titleKey}
                   className={`relative flex ${lang === "ar" ? "flex-row-reverse" : "flex-row"} items-start gap-5 transition-all duration-700 ${
                     isVisible ? "opacity-100 translate-x-0" : `opacity-0 ${lang === "ar" ? "translate-x-6" : "-translate-x-6"}`
                   }`}
@@ -76,14 +76,16 @@ export function Program() {
                     </div>
                   </div>
 
-                  <div className="pt-1 flex-1">
-                    <div className={`flex items-center gap-3 ${lang === "ar" ? "flex-row-reverse" : ""}`}>
-                      <span
-                        className="font-sans text-xs font-bold tracking-wide px-2.5 py-0.5 rounded-full"
-                        style={{ background: "#c8a96e", color: "#fff" }}
-                      >
-                        {event.time}
-                      </span>
+                  <div className={`pt-1 flex-1 ${lang === "ar" ? "text-right" : "text-left"}`}>
+                    <div className={`flex items-center gap-3 ${lang === "ar" ? "flex-row-reverse justify-end" : ""}`}>
+                      {event.time && (
+                        <span
+                          className="font-sans text-xs font-bold tracking-wide px-2.5 py-0.5 rounded-full"
+                          style={{ background: "#c8a96e", color: "#fff" }}
+                        >
+                          {event.time}
+                        </span>
+                      )}
                       <h3
                         className={`font-serif text-base font-semibold ${lang === "ar" ? "font-arabic" : ""}`}
                         style={{ color: "#2a2a2a" }}

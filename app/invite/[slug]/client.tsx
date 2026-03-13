@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { LanguageProvider } from "@/context/language-context"
+import { useState, useEffect, useCallback } from "react"
+import { LanguageProvider, useLanguage } from "@/context/language-context"
 import { Envelope } from "@/components/wedding/envelope"
 import { HeroSection } from "@/components/wedding/hero-section"
 import { PersonalizedWelcome } from "@/components/wedding/personalized-welcome"
@@ -15,25 +15,161 @@ import { MusicPlayer } from "@/components/wedding/music-player"
 import { LanguageToggle } from "@/components/wedding/language-toggle"
 import { FallingPetals } from "@/components/wedding/falling-petals"
 import { FloralDivider } from "@/components/wedding/floral-divider"
+import { ArabesqueDivider } from "@/components/wedding/arabesque-frame"
+import { weddingConfig } from "@/config/wedding"
 import type { Language } from "@/lib/types"
 
-interface PersonalizedInviteClientProps {
-  invitee: {
-    id: string
-    name_en: string
-    name_ar: string
-    slug: string
-    max_guests: number
-    language_preference: Language
-  } | null
-  langOverride?: Language
+interface InviteeData {
+  id: string
+  name_en: string
+  name_ar: string
+  slug: string
+  max_guests: number
+  language_preference: Language
 }
 
-export function PersonalizedInviteClient({ invitee, langOverride }: PersonalizedInviteClientProps) {
+interface Photo {
+  src: string
+  alt: string
+}
+
+interface PersonalizedInviteClientProps {
+  invitee: InviteeData | null
+  langOverride?: Language
+  photos: Photo[]
+}
+
+function ThankYouView({ invitee }: { invitee: InviteeData }) {
+  const { t, lang } = useLanguage()
+
+  const guestName = lang === "ar" ? (invitee.name_ar || invitee.name_en) : invitee.name_en
+
+  return (
+    <main className="relative min-h-screen overflow-x-hidden">
+      <FallingPetals count={6} />
+
+      <section
+        className="relative w-full py-24 px-6 text-center"
+        style={{
+          background: "linear-gradient(165deg, #f8f5f0 0%, #f2ede5 40%, #efe9df 70%, #f4efe7 100%)",
+        }}
+      >
+        <div className="max-w-md mx-auto">
+          <svg width="60" height="50" viewBox="0 0 60 50" fill="none" className="mx-auto mb-8" aria-hidden="true">
+            <path
+              d="M22 42S4 28 4 16C4 9 9 4 16 4c4.5 0 6.5 3 6 5.5C20 6 17 4 22 4c-5.5 3-6.5 5.5-6.5 5.5S22 4 22 4"
+              fill="none" stroke="none"
+            />
+            <path
+              d="M30 44S6 28 6 15a10.5 10.5 0 0 1 10.5-10.5C22 4.5 26 7.5 30 12c4-4.5 8-7.5 13.5-7.5A10.5 10.5 0 0 1 54 15c0 13-24 29-24 29Z"
+              fill="rgba(200,169,110,0.06)"
+              stroke="#c8a96e"
+              strokeWidth="1"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M30 38S12 26 12 17a7 7 0 0 1 7-7c3 0 6 2 11 7 5-5 8-7 11-7a7 7 0 0 1 7 7c0 9-18 21-18 21Z"
+              fill="rgba(200,169,110,0.1)"
+              stroke="#c8a96e"
+              strokeWidth="0.75"
+              strokeLinejoin="round"
+              opacity="0.6"
+            />
+          </svg>
+
+          <p
+            className={`text-sm tracking-[0.15em] uppercase ${lang === "ar" ? "font-arabic tracking-normal text-base" : "font-sans"}`}
+            style={{ color: "#a09888" }}
+          >
+            {t("welcome", "dear")}
+          </p>
+          <h2
+            className={`mt-2 ${lang === "ar" ? "font-arabic-display text-[2.25rem] font-medium" : "font-script text-3xl"}`}
+            style={{ color: "#2a2a2a" }}
+          >
+            {guestName}
+          </h2>
+
+          <h1
+            className={`text-xl mt-8 ${lang === "ar" ? "font-arabic text-lg" : "font-serif"}`}
+            style={{ color: "#5a6b50" }}
+          >
+            {t("rsvp", "thankYouConfirmed")}
+          </h1>
+
+          <p
+            className={`font-serif text-sm mt-3 ${lang === "ar" ? "font-arabic text-base" : ""}`}
+            style={{ color: "#888" }}
+          >
+            {t("rsvp", "seeYouThere")}
+          </p>
+
+          <ArabesqueDivider color="#c8a96e" className="mt-10 mb-2" />
+
+          <p
+            className={`font-serif text-base mt-6 ${lang === "ar" ? "font-arabic" : ""}`}
+            style={{ color: "#5a5a5a" }}
+          >
+            {weddingConfig.date.display[lang]}
+          </p>
+          <p
+            className={`font-serif text-sm mt-1 ${lang === "ar" ? "font-arabic" : ""}`}
+            style={{ color: "#888" }}
+          >
+            {weddingConfig.date.time[lang]}
+          </p>
+        </div>
+      </section>
+
+      <div
+        className="relative h-12"
+        style={{ background: "linear-gradient(to bottom, #f4efe7, #f4efe7)" }}
+        aria-hidden="true"
+      />
+
+      <Countdown hideRsvpButton />
+
+      <div
+        className="relative h-12"
+        style={{ background: "linear-gradient(to bottom, #f4efe7, #fff)" }}
+        aria-hidden="true"
+      />
+
+      <Location />
+
+      <FloralDivider lineColor="#c8a96e40" petalColor="#c8a96e" centerColor="#c8a96e" />
+
+      <Program />
+
+      <LanguageToggle />
+    </main>
+  )
+}
+
+export function PersonalizedInviteClient({ invitee, langOverride, photos }: PersonalizedInviteClientProps) {
   const [envelopeOpen, setEnvelopeOpen] = useState(false)
   const [showContent, setShowContent] = useState(false)
   const [whiteFlash, setWhiteFlash] = useState(false)
   const [musicPlaying, setMusicPlaying] = useState(false)
+  const [groupFull, setGroupFull] = useState(false)
+  const [checkingGroup, setCheckingGroup] = useState(!!invitee)
+
+  useEffect(() => {
+    if (!invitee) {
+      setCheckingGroup(false)
+      return
+    }
+    fetch(`/api/rsvp?invitee_id=${invitee.id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        const accepted = (data.responses || []).filter(
+          (r: { attending: string }) => r.attending === "accept"
+        ).length
+        if (accepted >= invitee.max_guests) setGroupFull(true)
+      })
+      .catch(() => {})
+      .finally(() => setCheckingGroup(false))
+  }, [invitee])
 
   const handleEnvelopeOpen = useCallback(() => {
     setMusicPlaying(true)
@@ -42,6 +178,32 @@ export function PersonalizedInviteClient({ invitee, langOverride }: Personalized
     setTimeout(() => setShowContent(true), 1200)
     setTimeout(() => setWhiteFlash(false), 2000)
   }, [])
+
+  if (checkingGroup) {
+    return (
+      <LanguageProvider defaultLang={langOverride ?? invitee?.language_preference ?? "en"}>
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ background: "linear-gradient(180deg, #fdfcf9 0%, #f8f6f3 100%)", zIndex: 9999 }}
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 rounded-full border-2 border-[#c8a96e40] border-t-[#c8a96e] animate-spin" />
+            <p className="font-serif text-xs tracking-[0.2em] uppercase" style={{ color: "#c8a96e80" }}>
+              Loading your invitation...
+            </p>
+          </div>
+        </div>
+      </LanguageProvider>
+    )
+  }
+
+  if (groupFull && invitee) {
+    return (
+      <LanguageProvider defaultLang={langOverride ?? invitee.language_preference ?? "en"}>
+        <ThankYouView invitee={invitee} />
+      </LanguageProvider>
+    )
+  }
 
   return (
     <LanguageProvider defaultLang={langOverride ?? invitee?.language_preference ?? "en"}>
@@ -72,7 +234,7 @@ export function PersonalizedInviteClient({ invitee, langOverride }: Personalized
               isVisible={showContent}
             />
 
-            <PhotoGallery />
+            <PhotoGallery photos={photos} />
             <VerseSection />
 
             <div
@@ -93,20 +255,17 @@ export function PersonalizedInviteClient({ invitee, langOverride }: Personalized
 
             <FloralDivider lineColor="#c8a96e40" petalColor="#c8a96e" centerColor="#c8a96e" />
 
-            <Program />
-
-            <FloralDivider lineColor="#c8a96e40" petalColor="#c8a96e" centerColor="#c8a96e" />
-
             <RSVP
               inviteeId={invitee?.id}
               maxGuests={invitee?.max_guests ?? 4}
+              onGroupFull={() => setGroupFull(true)}
             />
           </div>
         )}
 
         <MusicPlayer shouldPlay={musicPlaying} />
-        {envelopeOpen && <LanguageToggle />}
       </main>
+      <LanguageToggle />
     </LanguageProvider>
   )
 }

@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
-import { Cormorant_Garamond, Great_Vibes, Lato, Amiri } from "next/font/google"
+import { Cormorant_Garamond, Great_Vibes, Lato, Amiri, Tajawal } from "next/font/google"
 
 import "./globals.css"
 
@@ -28,13 +28,19 @@ const amiri = Amiri({
   variable: "--font-arabic",
 })
 
+const tajawal = Tajawal({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-arabic-display",
+})
+
 export const metadata: Metadata = {
   title: {
     default: "Nada & Karim - Wedding Invitation",
     template: "%s | Nada & Karim Wedding",
   },
   description:
-    "You are cordially invited to celebrate the wedding of Nada & Karim on May 22, 2026 at Four Seasons Hotel Cairo",
+    "You are cordially invited to celebrate the wedding of Nada & Karim on May 22, 2026 at Al Masa Hotel, Cairo",
   keywords: ["wedding", "invitation", "Nada", "Karim", "Cairo", "Egypt"],
   authors: [{ name: "Nada & Karim" }],
   openGraph: {
@@ -52,11 +58,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#c8a96e",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 }
 
 export default function RootLayout({
@@ -67,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${cormorant.variable} ${greatVibes.variable} ${lato.variable} ${amiri.variable} font-sans antialiased`}
+        className={`${cormorant.variable} ${greatVibes.variable} ${lato.variable} ${amiri.variable} ${tajawal.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         {children}

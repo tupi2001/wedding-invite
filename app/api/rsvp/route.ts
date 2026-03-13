@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { submitRSVP, getAllRSVPs, getRSVPSummary, getRSVPsByInviteeId } from "@/lib/db"
+import { submitRSVP, getAllRSVPs, getRSVPSummary, getRSVPsByInviteeId, deleteRSVP } from "@/lib/db"
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,6 +41,29 @@ export async function POST(request: NextRequest) {
     const status = errorMessage.includes("spots") || errorMessage.includes("already") ? 409 : 500
     console.error("RSVP submission error:", error)
     return NextResponse.json({ error: errorMessage }, { status })
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get("id")
+    const adminKey = searchParams.get("key")
+    const expectedKey = process.env.ADMIN_PASSWORD || "wedding2026"
+
+    if (adminKey !== expectedKey) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: "RSVP id is required" }, { status: 400 })
+    }
+
+    await deleteRSVP(id)
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error("RSVP delete error:", error)
+    return NextResponse.json({ error: "Failed to delete RSVP" }, { status: 500 })
   }
 }
 

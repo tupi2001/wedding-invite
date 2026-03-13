@@ -30,7 +30,10 @@ export function Envelope({ onOpen }: EnvelopeProps) {
   }, [isOpening, onOpen])
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-white px-4" style={{ zIndex: 9999 }}>
+    <div
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden px-4"
+      style={{ zIndex: 9999, background: "linear-gradient(180deg, #fdfcf9 0%, #f8f6f3 100%)" }}
+    >
       <style jsx>{`
         @keyframes float-particle {
           0%, 100% { transform: translateY(0); opacity: 0.2; }
@@ -204,7 +207,7 @@ export function Envelope({ onOpen }: EnvelopeProps) {
                 whileHover={{ scale: 1.08, transition: { duration: 0.3, ease: "easeOut" } }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 180, damping: 18 }}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer focus:outline-none border-0 p-0 bg-transparent z-10 w-[clamp(70px,18vw,90px)] h-[clamp(70px,18vw,90px)]"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c8a96e] focus-visible:ring-offset-4 border-0 p-0 bg-transparent z-10 w-[clamp(70px,18vw,90px)] h-[clamp(70px,18vw,90px)]"
                 aria-label="Open envelope"
                 type="button"
               >
@@ -245,8 +248,8 @@ export function Envelope({ onOpen }: EnvelopeProps) {
                 <motion.p
                   className={`font-sans text-[11px] sm:text-xs tracking-[0.2em] uppercase font-medium ${lang === "ar" ? "font-arabic tracking-normal" : ""}`}
                   style={{ color: "#4a4a4a" }}
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ opacity: [0.5, 0.9, 0.5] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {t("envelope", "tapToOpen")}
                 </motion.p>
@@ -307,7 +310,7 @@ export function Envelope({ onOpen }: EnvelopeProps) {
         className="mt-8 text-center"
       >
         <motion.p
-          className="font-serif text-base tracking-[0.2em]"
+          className={`font-serif text-base tracking-[0.2em] ${lang === "ar" ? "font-arabic tracking-normal" : ""}`}
           style={{ color: "#c8a96e" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -316,6 +319,7 @@ export function Envelope({ onOpen }: EnvelopeProps) {
           {t("envelope", "date")}
         </motion.p>
       </motion.div>
+
     </div>
   )
 }

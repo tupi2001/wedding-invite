@@ -84,21 +84,7 @@ export function MusicPlayer({ shouldPlay }: { shouldPlay: boolean }) {
 
   if (!isVisible) return null
 
-  // Don't show button if no audio file is available
-  if (!hasAudioFile) {
-    return (
-      <div
-        className="fixed bottom-6 right-6 z-50 px-4 py-2 rounded-full text-xs"
-        style={{
-          background: "rgba(176,141,152,0.1)",
-          color: "#666",
-          border: "1px solid rgba(176,141,152,0.2)",
-        }}
-      >
-        Add music file to /public/music/wedding-music.mp3
-      </div>
-    )
-  }
+  if (!hasAudioFile) return null
 
   return (
     <button

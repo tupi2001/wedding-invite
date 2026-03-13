@@ -15,7 +15,7 @@ export function Location() {
       ref={ref}
       id="location"
       className="relative w-full py-20 px-6"
-      style={{ background: "#fff" }}
+      style={{ background: "linear-gradient(180deg, #fff 0%, #fdfcf9 100%)" }}
     >
       <div className="max-w-md mx-auto">
         <div
@@ -75,7 +75,11 @@ export function Location() {
 
         <div
           className={`mt-8 rounded-xl overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: "400ms", boxShadow: "0 4px 20px rgba(200,169,110,0.1)" }}
+          style={{
+            transitionDelay: "400ms",
+            boxShadow: "0 8px 32px rgba(200,169,110,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+            border: "1px solid rgba(200,169,110,0.12)",
+          }}
         >
           <div className="relative w-full" style={{ paddingBottom: "60%" }}>
             <iframe
@@ -97,7 +101,7 @@ export function Location() {
             href={`https://maps.google.com/?q=${weddingConfig.venue.googleMapsQuery}&travelmode=driving`}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full font-sans text-sm tracking-wide border transition-all duration-300 hover:shadow-md ${lang === "ar" ? "font-arabic" : ""}`}
+            className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full font-sans text-sm tracking-wide border transition-all duration-300 hover:shadow-md hover:bg-[rgba(200,169,110,0.06)] hover:border-[#c8a96e] ${lang === "ar" ? "font-arabic" : ""}`}
             style={{ borderColor: "#c8a96e60", color: "#c8a96e", background: "transparent" }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">

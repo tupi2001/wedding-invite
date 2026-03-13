@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { PersonalizedInviteClient } from "./client"
+import { getGalleryPhotos } from "@/lib/gallery"
 import type { Language } from "@/lib/types"
 
 export const dynamic = "force-dynamic"
@@ -52,6 +53,8 @@ export default async function InvitePage({ params, searchParams }: PageProps) {
   const langOverride: Language | undefined =
     langParam === "ar" ? "ar" : langParam === "en" ? "en" : undefined
 
+  const photos = getGalleryPhotos()
+
   return (
     <PersonalizedInviteClient
       invitee={invitee ? {
@@ -63,6 +66,7 @@ export default async function InvitePage({ params, searchParams }: PageProps) {
         language_preference: invitee.language_preference,
       } : null}
       langOverride={langOverride}
+      photos={photos}
     />
   )
 }

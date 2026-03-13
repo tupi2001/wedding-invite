@@ -169,6 +169,11 @@ export async function getRSVPSummary(): Promise<RSVPSummary> {
   }
 }
 
+export async function deleteRSVP(id: string): Promise<void> {
+  const { error } = await supabase.from("rsvp_responses").delete().eq("id", id)
+  if (error) throw new Error(error.message)
+}
+
 export async function getInviteesWithRSVPs(): Promise<InviteeWithRSVPs[]> {
   const [invitees, rsvps] = await Promise.all([getAllInvitees(), getAllRSVPs()])
 

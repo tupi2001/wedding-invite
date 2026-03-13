@@ -48,13 +48,13 @@ export function PersonalizedWelcome({
             transition={{ duration: 1, delay: 0.3 }}
           >
             <p
-              className="font-serif text-sm tracking-[0.25em] uppercase"
-              style={{ color: "#999" }}
+              className="font-serif text-sm tracking-[0.3em] uppercase"
+              style={{ color: "#c8a96e" }}
             >
               {t("welcome", "dear")}
             </p>
             <h2
-              className={`font-script text-5xl sm:text-6xl mt-3 ${lang === "ar" ? "font-arabic" : ""}`}
+              className={`mt-3 ${lang === "ar" ? "font-arabic-display text-4xl sm:text-5xl font-medium" : "font-script text-5xl sm:text-6xl"}`}
               style={{ color: "#2a2a2a" }}
             >
               {guestName}
@@ -66,7 +66,7 @@ export function PersonalizedWelcome({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: guestName ? 0.6 : 0.3 }}
-          className="mt-8"
+          className="mt-10"
         >
           <p
             className={`font-serif text-base leading-relaxed ${lang === "ar" ? "font-arabic text-lg" : ""}`}

@@ -8,6 +8,7 @@ import { ArabesqueDivider } from "./arabesque-frame"
 interface RSVPProps {
   inviteeId?: string
   maxGuests?: number
+  onGroupFull?: () => void
 }
 
 interface GroupRSVP {
@@ -18,7 +19,7 @@ interface GroupRSVP {
   submitted_at: string
 }
 
-export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
+export function RSVP({ inviteeId, maxGuests = 4, onGroupFull }: RSVPProps) {
   const { ref, isVisible } = useScrollReveal(0.15)
   const { t, lang } = useLanguage()
   const [submitted, setSubmitted] = useState(false)
@@ -98,6 +99,19 @@ export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
 
       setSubmitted(true)
       await fetchGroupRSVPs()
+
+      if (onGroupFull && inviteeId && attending === "accept") {
+        const res = await fetch(`/api/rsvp?invitee_id=${inviteeId}`)
+        if (res.ok) {
+          const freshData = await res.json()
+          const newAccepted = (freshData.responses || []).filter(
+            (r: { attending: string }) => r.attending === "accept"
+          ).length
+          if (newAccepted >= maxGuests) {
+            setTimeout(() => onGroupFull(), 2000)
+          }
+        }
+      }
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Something went wrong. Please try again.")
     } finally {
@@ -127,7 +141,7 @@ export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
     <section
       ref={ref}
       id="rsvp"
-      className="relative w-full py-20 px-6"
+      className="relative w-full py-20 px-6 scroll-mt-24"
       style={{
         background: "linear-gradient(180deg, #fff 0%, #fef9f4 50%, #fdf5ee 100%)",
       }}
@@ -158,6 +172,20 @@ export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
 
         <ArabesqueDivider color="#c8a96e" className="mt-4 mb-4" />
 
+        {/* Group status loading skeleton */}
+        {inviteeId && loadingGroup && (
+          <div
+            className="mt-6 rounded-xl p-4 animate-pulse"
+            style={{ background: "rgba(200,169,110,0.06)" }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="h-4 w-28 bg-[#c8a96e20] rounded" />
+              <div className="h-4 w-28 bg-[#c8a96e20] rounded" />
+            </div>
+            <div className="mt-3 h-1.5 rounded-full bg-[#c8a96e15]" />
+          </div>
+        )}
+
         {/* Group status */}
         {inviteeId && !loadingGroup && (
           <div
@@ -166,7 +194,7 @@ export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
           >
             <div
               className="rounded-xl p-4"
-              style={{ background: "rgba(200,169,110,0.06)", border: "1px solid rgba(200,169,110,0.12)" }}
+              style={{ background: "rgba(200,169,110,0.08)", border: "1px solid rgba(200,169,110,0.18)" }}
             >
               <div className={`flex items-center justify-between ${lang === "ar" ? "flex-row-reverse" : ""}`}>
                 <span className={`font-sans text-sm ${lang === "ar" ? "font-arabic" : ""}`} style={{ color: "#666" }}>
@@ -313,9 +341,12 @@ export function RSVP({ inviteeId, maxGuests = 4 }: RSVPProps) {
                     aria-checked={attending === option.value}
                     className={`flex-1 py-3 px-4 rounded-xl font-sans text-sm border transition-all duration-300 ${lang === "ar" ? "font-arabic" : ""}`}
                     style={{
-                      background: attending === option.value ? "#c8a96e" : "rgba(255,255,255,0.9)",
+                      background: attending === option.value
+                        ? "linear-gradient(135deg, #c8a96e, #b89a5e)"
+                        : "rgba(255,255,255,0.9)",
                       color: attending === option.value ? "#fff" : "#555",
-                      borderColor: attending === option.value ? "#c8a96e" : "#c8a96e40",
+                      borderColor: attending === option.value ? "#b89a5e" : "#c8a96e40",
+                      boxShadow: attending === option.value ? "0 4px 12px rgba(200,169,110,0.25)" : "none",
                     }}
                   >
                     {t("rsvp", option.labelKey)}
